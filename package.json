@@ -7,9 +7,11 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
+    "make-icon": "react-native-make app-icon --path ./assets/app_icon.jpg",
     "test": "jest"
   },
   "dependencies": {
+    "GroceryShop": "file:",
     "react": "19.0.0",
     "react-native": "0.79.1"
   },
