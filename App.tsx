@@ -5,94 +5,200 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
+  SafeAreaView,
   View,
+  Image,
+  Text,
+  TouchableOpacity,
+  TextInput,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({ children, title }: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function App() {
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#e8ecf4' }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image
+            alt="App Logo"
+            resizeMode="contain"
+            style={styles.headerImg}
+            source={{ uri: 'https://assets.withfra.me/SignIn.2.png' }} />
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+          <Text style={styles.title}>
+            Sign in to <Text style={{ color: '#075eec' }}>GroceryShop</Text>
+          </Text>
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+          <Text style={styles.subtitle}>
+            Get access to some FRESH Products and more!!!
+          </Text>
+        </View>
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
+        <View style={styles.form}>
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Email address</Text>
 
-  return (
-    <Text style={{ fontSize: 30 }}> Hi Buddy</Text>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              clearButtonMode="while-editing"
+              keyboardType="email-address"
+              onChangeText={email => setForm({ ...form, email })}
+              placeholder="john@example.com"
+              placeholderTextColor="#6b7280"
+              style={styles.inputControl}
+              value={form.email} />
+          </View>
+
+          <View style={styles.input}>
+            <Text style={styles.inputLabel}>Password</Text>
+
+            <TextInput
+              autoCorrect={false}
+              clearButtonMode="while-editing"
+              onChangeText={password => setForm({ ...form, password })}
+              placeholder="********"
+              placeholderTextColor="#6b7280"
+              style={styles.inputControl}
+              secureTextEntry={true}
+              value={form.password} />
+          </View>
+
+          <View style={styles.formAction}>
+            <TouchableOpacity
+              onPress={() => {
+                // handle onPress
+              }}>
+              <View style={styles.btn}>
+                <Text style={styles.btnText}>Sign in</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => {
+              // handle link
+            }}>
+            <Text style={styles.formLink}>Forgot password?</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          // handle link
+        }}>
+        <Text style={styles.formFooter}>
+          Don't have an account?{' '}
+          <Text style={{ textDecorationLine: 'underline' }}>Sign up</Text>
+        </Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+    padding: 24,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
+  title: {
+    fontSize: 31,
     fontWeight: '700',
+    color: '#1D2A32',
+    marginBottom: 6,
+  },
+  subtitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#929292',
+  },
+  /** Header */
+  header: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 36,
+  },
+  headerImg: {
+    width: 80,
+    height: 80,
+    alignSelf: 'center',
+    marginBottom: 36,
+  },
+  /** Form */
+  form: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+  },
+  formAction: {
+    marginTop: 4,
+    marginBottom: 16,
+  },
+  formLink: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#075eec',
+    textAlign: 'center',
+  },
+  formFooter: {
+    paddingVertical: 24,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#222',
+    textAlign: 'center',
+    letterSpacing: 0.15,
+  },
+  /** Input */
+  input: {
+    marginBottom: 16,
+  },
+  inputLabel: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#222',
+    marginBottom: 8,
+  },
+  inputControl: {
+    height: 50,
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#222',
+    borderWidth: 1,
+    borderColor: '#C9D3DB',
+    borderStyle: 'solid',
+  },
+  /** Button */
+  btn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    backgroundColor: '#075eec',
+    borderColor: '#075eec',
+  },
+  btnText: {
+    fontSize: 18,
+    lineHeight: 26,
+    fontWeight: '600',
+    color: '#fff',
   },
 });
 

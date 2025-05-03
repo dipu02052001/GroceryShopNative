@@ -17,6 +17,8 @@ npm start
 # OR using Yarn
 yarn start
 ```
+#delete node modules
+rd /s /q node_modules
 
 ## Step 2: Build and run your app
 
