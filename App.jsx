@@ -7,6 +7,7 @@
 
 
 import AppNagivator from "./components/AppNagivator";
+import { LoginProvider } from "./components/LoginContext";
 
 
 
@@ -16,7 +17,9 @@ function App() {
   console.log('hiiiiiiiiii');
 
   return (
+    <LoginProvider>
      <AppNagivator/>
+     </LoginProvider>
       
     
   );

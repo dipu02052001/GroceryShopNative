@@ -1,0 +1,114 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { View, TextInput, Button, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import axios from 'axios';
+import { LoginContext } from './LoginContext' // ensure this exists
+import { useNavigation } from '@react-navigation/native';
+
+const LoginForm = () => {
+  const [users, setUsers] = useState([]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { setIsLoggedIn } = useContext(LoginContext);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    axios
+      .get('https://groceryshop-spring-backend.onrender.com/customers/getCustomers')
+      .then((response) => {
+        console.log('API Response:', response.data);
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  const handleLogin = () => {
+    const userFound = users.find(
+      (user) => user.email === username && user.password === password
+    );
+
+    if (userFound) {
+      Alert.alert('Login Successful!');
+      setIsLoggedIn(true);
+      navigation.navigate('Home');
+    } else {
+      Alert.alert('Login Failed', 'Invalid credentials.');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.title}>Login</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={username}
+          onChangeText={setUsername}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+
+        <Button title="Login" onPress={handleLogin} color="#667eea" />
+
+        <View style={styles.linksContainer}>
+          <TouchableOpacity>
+            <Text style={styles.link}>Forgot Password?</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.link}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default LoginForm;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#667eea',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    width: '85%',
+    backgroundColor: '#fff',
+    padding: 24,
+    borderRadius: 12,
+    elevation: 5,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  linksContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 12,
+  },
+  link: {
+    color: '#667eea',
+    textDecorationLine: 'underline',
+  },
+});
