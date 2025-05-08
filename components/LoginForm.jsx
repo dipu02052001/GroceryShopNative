@@ -31,9 +31,11 @@ const LoginForm = () => {
     if (userFound) {
       Alert.alert('Login Successful!');
       setIsLoggedIn(true);
-      navigation.navigate('Home');
+      navigation.navigate('LoggedInHome');
     } else {
       Alert.alert('Login Failed', 'Invalid credentials.');
+      setUsername("")
+      setPassword("")
     }
   };
 
@@ -49,14 +51,16 @@ const LoginForm = () => {
           onChangeText={setUsername}
           keyboardType="email-address"
           autoCapitalize="none"
+          required
         />
         <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        placeholder="Enter your password"
+        secureTextEntry={true}
+        style={styles.input}
+        value={password}
+        onChangeText={setPassword}
+        required
+      />
 
         <Button title="Login" onPress={handleLogin} color="#667eea" />
 
@@ -64,7 +68,7 @@ const LoginForm = () => {
           <TouchableOpacity>
             <Text style={styles.link}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity  onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.link}>Sign Up</Text>
           </TouchableOpacity>
         </View>
@@ -101,6 +105,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginBottom: 12,
+    color:'black'
   },
   linksContainer: {
     flexDirection: 'row',

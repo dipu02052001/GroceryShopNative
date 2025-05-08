@@ -22,7 +22,7 @@ const SignUp = () => {
              alt="App Logo"
              resizeMode="contain"
              style={styles.headerImg}
-             source={{ uri: 'https://assets.withfra.me/SignIn.2.png' }} />
+             source={require('../assets/app_icon.jpg')} />
  
            <Text style={styles.title}>
              Sign in to <Text style={{ color: '#075eec' }}>GroceryShop</Text>
@@ -36,6 +36,8 @@ const SignUp = () => {
          <View style={styles.form}>
            <View style={styles.input}>
              <Text style={styles.inputLabel}>Email address</Text>
+
+             
  
              <TextInput
                autoCapitalize="none"
@@ -121,7 +123,7 @@ const SignUp = () => {
      marginVertical: 36,
    },
    headerImg: {
-     width: 80,
+     width: 160,
      height: 80,
      alignSelf: 'center',
      marginBottom: 36,

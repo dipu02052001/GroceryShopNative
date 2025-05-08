@@ -8,12 +8,9 @@ const Home = () => {
 
     const navigation = useNavigation();
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home</Text>
+    <View style={{ flex: 1, justifyContent: 'center', width : '100%'}}>
       <LoginForm/>
-      <Button onPress={() => navigation.navigate('SignUp')}>
-        Go to SignUp!!!
-      </Button>
+
       
     </View>
   )
