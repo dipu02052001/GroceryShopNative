@@ -7,13 +7,35 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
+    Alert
   } from 'react-native';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUp = () => {
  const [form, setForm] = useState({
+     name : '',
      email: '',
      password: '',
    });
+   const navigation = useNavigation();
+   const handleSignUp = () => {
+    if (!form.name || !form.email || !form.password) {
+      Alert.alert('Validation', 'All fields are required!');
+      return;
+    }
+
+    axios.post('https://groceryshop-spring-backend.onrender.com/customers/createCustomers', form)
+      .then(response => {
+        console.log('Signup Success:', response.data);
+        Alert.alert('Success', 'Customer registered successfully!');
+        navigation.navigate('Home');
+      })
+      .catch(error => {
+        console.error('Signup Error:', error);
+        Alert.alert('Error', 'Failed to register. Please try again.');
+      });
+  };
    return (
      <SafeAreaView style={{ flex: 1, backgroundColor: '#e8ecf4' }}>
        <View style={styles.container}>
@@ -34,11 +56,23 @@ const SignUp = () => {
          </View>
  
          <View style={styles.form}>
+         <View style={styles.input}>
+             <Text style={styles.inputLabel}>Name </Text>
+
+             <TextInput
+               autoCapitalize="none"
+               autoCorrect={true}
+               clearButtonMode="while-editing"
+               keyboardType="Name"
+               onChangeText={name => setForm({ ...form, name })}
+               placeholder="John"
+               placeholderTextColor="#6b7280"
+               style={styles.inputControl}
+               value={form.namel} />
+           </View>
            <View style={styles.input}>
              <Text style={styles.inputLabel}>Email address</Text>
 
-             
- 
              <TextInput
                autoCapitalize="none"
                autoCorrect={false}
@@ -66,34 +100,15 @@ const SignUp = () => {
            </View>
  
            <View style={styles.formAction}>
-             <TouchableOpacity
-               onPress={() => {
-                 // handle onPress
-               }}>
+             <TouchableOpacity onPress={handleSignUp}>
                <View style={styles.btn}>
-                 <Text style={styles.btnText}>Sign in</Text>
+                 <Text style={styles.btnText}>Sign Up</Text>
                </View>
              </TouchableOpacity>
            </View>
- 
-           <TouchableOpacity
-             onPress={() => {
-               // handle link
-             }}>
-             <Text style={styles.formLink}>Forgot password?</Text>
-           </TouchableOpacity>
          </View>
        </View>
  
-       <TouchableOpacity
-         onPress={() => {
-           // handle link
-         }}>
-         <Text style={styles.formFooter}>
-           Don't have an account?{' '}
-           <Text style={{ textDecorationLine: 'underline' }}>Sign up</Text>
-         </Text>
-       </TouchableOpacity>
      </SafeAreaView>
    );
  }
