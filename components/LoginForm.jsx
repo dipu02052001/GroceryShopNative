@@ -24,6 +24,10 @@ const LoginForm = () => {
   }, []);
 
   const handleLogin = () => {
+     if (!username || !password) {
+          Alert.alert('Validation', 'All fields are required!');
+          return;
+      }
     const userFound = users.find(
       (user) => user.email === username && user.password === password
     );
@@ -39,6 +43,10 @@ const LoginForm = () => {
     }
   };
 
+  const handleForget = () => {
+    navigation.navigate('SetNewPassword');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -47,6 +55,7 @@ const LoginForm = () => {
         <TextInput
           style={styles.input}
           placeholder="Email"
+          placeholderTextColor="#6b7280"
           value={username}
           onChangeText={setUsername}
           keyboardType="email-address"
@@ -54,7 +63,8 @@ const LoginForm = () => {
           required
         />
         <TextInput
-        placeholder="Enter your password"
+        placeholder="password"
+        placeholderTextColor="#6b7280"
         secureTextEntry={true}
         style={styles.input}
         value={password}
@@ -65,7 +75,7 @@ const LoginForm = () => {
         <Button title="Login" onPress={handleLogin} color="#667eea" />
 
         <View style={styles.linksContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleForget}>
             <Text style={styles.link}>Forgot Password?</Text>
           </TouchableOpacity>
           <TouchableOpacity  onPress={() => navigation.navigate('SignUp')}>
@@ -82,7 +92,7 @@ export default LoginForm;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#667eea',
+    backgroundColor: '#a1c4f0',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -105,7 +115,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginBottom: 12,
-    color:'black'
+    color:'red'
   },
   linksContainer: {
     flexDirection: 'row',
