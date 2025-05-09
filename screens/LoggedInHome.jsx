@@ -39,43 +39,42 @@ const LoggedInHome = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Welcome to FreshBasket!</Text>
-
-      {/* TODO: Add Carousel Here */}
-      <View style={styles.carouselPlaceholder}>
-        <Text style={styles.carouselText}>[Carousel Coming Soon]</Text>
-      </View>
-
-      <Text style={styles.subtitle}>
-        Your one-stop shop for fresh groceries delivered straight to your doorstep.
-      </Text>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleShopping}
-      >
-        <Text style={styles.buttonText}>Start Shopping Now</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.sectionTitle}>Why Choose Us?</Text>
-
-      <FlatList
-        data={features}
-        numColumns={2}
-        keyExtractor={(item, index) => index.toString()}
-        columnWrapperStyle={styles.row}
-        contentContainerStyle={{ paddingBottom: 20 }}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardDesc}>{item.desc}</Text>
+    <FlatList
+      ListHeaderComponent={
+        <>
+          <Text style={styles.title}>Welcome to FreshBasket!</Text>
+  
+          {/* Carousel Placeholder */}
+          <View style={styles.carouselPlaceholder}>
+            <Text style={styles.carouselText}>[Carousel Coming Soon]</Text>
           </View>
-        )}
-      />
-    </ScrollView>
+  
+          <Text style={styles.subtitle}>
+            Your one-stop shop for fresh groceries delivered straight to your doorstep.
+          </Text>
+  
+          <TouchableOpacity style={styles.button} onPress={handleShopping}>
+            <Text style={styles.buttonText}>Start Shopping Now</Text>
+          </TouchableOpacity>
+  
+          <Text style={styles.sectionTitle}>Why Choose Us?</Text>
+        </>
+      }
+      data={features}
+      numColumns={2}
+      keyExtractor={(item, index) => index.toString()}
+      columnWrapperStyle={styles.row}
+      contentContainerStyle={styles.container}
+      renderItem={({ item }) => (
+        <View style={styles.card}>
+          <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
+          <Text style={styles.cardTitle}>{item.title}</Text>
+          <Text style={styles.cardDesc}>{item.desc}</Text>
+        </View>
+      )}
+    />
   );
+  
 };
 
 const styles = StyleSheet.create({
