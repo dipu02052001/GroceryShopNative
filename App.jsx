@@ -1,27 +1,18 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-
-import AppNagivator from "./components/AppNagivator";
-import { LoginProvider } from "./components/LoginContext";
-
-
-
+import React from 'react';
+import AppNagivator from './components/AppNagivator';
+import {LoginProvider} from './components/LoginContext';
+import {Provider as PaperProvider} from 'react-native-paper'; // ✅ Import this
 
 function App() {
-
-  console.log('hiiiiiiiiii');
-
   return (
-    <LoginProvider>
-     <AppNagivator/>
-     </LoginProvider>
-      
-    
+    <PaperProvider>
+      {' '}
+      {/* ✅ Wrap here */}
+      <LoginProvider>
+        <AppNagivator />
+      </LoginProvider>
+    </PaperProvider>
   );
 }
+
 export default App;

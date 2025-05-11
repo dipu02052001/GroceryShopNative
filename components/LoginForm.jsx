@@ -1,51 +1,63 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {
+  View,
+  TextInput,
+  Button,
+  Text,
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
-import { LoginContext } from './LoginContext' // ensure this exists
-import { useNavigation } from '@react-navigation/native';
+import {LoginContext} from './LoginContext'; // ensure this exists
+import {useNavigation} from '@react-navigation/native';
 
 const LoginForm = () => {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setIsLoggedIn } = useContext(LoginContext);
+  const {setIsLoggedIn} = useContext(LoginContext);
   const navigation = useNavigation();
 
   useEffect(() => {
     axios
-      .get('https://groceryshop-spring-backend.onrender.com/customers/getCustomers')
-      .then((response) => {
+      .get(
+        'https://groceryshop-spring-backend.onrender.com/customers/getCustomers',
+      )
+      .then(response => {
         console.log('API Response:', response.data);
         setUsers(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching data:', error);
       });
   }, []);
 
   const handleLogin = () => {
-     if (!username || !password) {
-          Alert.alert('Validation', 'All fields are required!');
-          return;
-      }
+    if (!username || !password) {
+      Alert.alert('Validation', 'All fields are required!');
+      return;
+    }
     const userFound = users.find(
-      (user) => user.email === username && user.password === password
+      user => user.email === username && user.password === password,
     );
 
     if (userFound) {
-      Alert.alert('Login Successful!');
+      // Alert.alert('Login Successful!');
       setIsLoggedIn(true);
       navigation.navigate('LoggedInHome');
+      setUsername('');
+      setPassword('');
     } else {
       Alert.alert('Login Failed', 'Invalid credentials.');
-      setUsername("")
-      setPassword("")
+      setUsername('');
+      setPassword('');
     }
   };
 
   const handleForget = () => {
     navigation.navigate('SetNewPassword');
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -55,7 +67,7 @@ const LoginForm = () => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="#6b7280"
+          placeholderTextColor="black"
           value={username}
           onChangeText={setUsername}
           keyboardType="email-address"
@@ -63,14 +75,14 @@ const LoginForm = () => {
           required
         />
         <TextInput
-        placeholder="password"
-        placeholderTextColor="#6b7280"
-        secureTextEntry={true}
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        required
-      />
+          placeholder="password"
+          placeholderTextColor="black"
+          secureTextEntry={true}
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          required
+        />
 
         <Button title="Login" onPress={handleLogin} color="#667eea" />
 
@@ -78,7 +90,7 @@ const LoginForm = () => {
           <TouchableOpacity onPress={handleForget}>
             <Text style={styles.link}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity  onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.link}>Sign Up</Text>
           </TouchableOpacity>
         </View>
@@ -115,7 +127,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginBottom: 12,
-    color:'red'
+    color: 'black',
   },
   linksContainer: {
     flexDirection: 'row',

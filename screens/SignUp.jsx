@@ -1,41 +1,72 @@
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
-
-// export default SignUp
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Alert} from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import {TextInput, Button} from 'react-native-paper';
 
 const SignUp = () => {
   const [form, setForm] = useState({
-    name : '',
+    name: '',
     email: '',
     mobile: '',
     password: '',
-    confirmPassword:''
-});
+    confirmPassword: '',
+  });
+  const [mobileError, setMobileError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState('');
+
   const navigation = useNavigation();
+  const validateEmail = email => {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+  };
+
   const handleSignUp = () => {
-    if (!form.name || !form.email || !form.mobile || !form.confirmPassword || !form.password) {
+    const {name, email, mobile, password, confirmPassword} = form;
+
+    if (!name || !email || !mobile || !password || !confirmPassword) {
       Alert.alert('Validation', 'All fields are required!');
       return;
     }
-    // Signup logic
-    console.log(name, email, mobile, password, confirmPassword);
-    axios.post('https://groceryshop-spring-backend.onrender.com/customers/createCustomers', form)
+    if (!/^\d{10}$/.test(form.mobile)) {
+      Alert.alert('Validation', 'Mobile number must be exactly 10 digits!');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Validation', 'Passwords do not match!');
+      return;
+    }
+
+    if (!validateEmail(form.email)) {
+      setEmailError('Invalid email format');
+      return;
+    }
+    
+
+    axios
+      .post(
+        'https://groceryshop-spring-backend.onrender.com/Signup/createAccount',
+        form,
+      )
       .then(response => {
         console.log('Signup Success:', response.data);
         Alert.alert('Success', 'Customer registered successfully!');
-        navigation.navigate('Home');
+        navigation.goBack();
       })
       .catch(error => {
         console.error('Signup Error:', error);
         Alert.alert('Error', 'Failed to register. Please try again.');
       });
   };
-  const handleLogin = () => {
-    navigation.navigate('Home')
-  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -46,8 +77,7 @@ const SignUp = () => {
         value={form.name}
         mode="outlined"
         style={styles.input}
-        onChangeText={name => setForm({ ...form, name })}
-        
+        onChangeText={name => setForm({...form, name})}
       />
       <TextInput
         label="Email Address"
@@ -55,23 +85,49 @@ const SignUp = () => {
         mode="outlined"
         keyboardType="email-address"
         style={styles.input}
-        onChangeText={name => setForm({ ...form, mobile })}
+        error={!!emailError}
+        onChangeText={email => {
+          setForm({...form, email});
+
+          if (!validateEmail(email)) {
+            setEmailError('Invalid email format');
+          } else {
+            setEmailError('');
+          }
+        }}
       />
+      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+
       <TextInput
         label="Mobile Number"
         value={form.mobile}
         mode="outlined"
         keyboardType="phone-pad"
         style={styles.input}
-        onChangeText={name => setForm({ ...form, email })}
+        error={!!mobileError}
+        maxLength={10} // ⬅️ This limits input to 10 characters
+        onChangeText={mobile => {
+          if (/^\d*$/.test(mobile)) {
+            // allow only digits
+            setForm({...form, mobile});
+
+            if (mobile.length < 10) {
+              setMobileError('Mobile number must be 10 digits');
+            } else {
+              setMobileError('');
+            }
+          }
+        }}
       />
+      {mobileError ? <Text style={styles.errorText}>{mobileError}</Text> : null}
+
       <TextInput
         label="Password"
         value={form.password}
         mode="outlined"
         secureTextEntry
         style={styles.input}
-        onChangeText={name => setForm({ ...form, password })}
+        onChangeText={password => setForm({...form, password})}
       />
       <TextInput
         label="Confirm Password"
@@ -79,19 +135,30 @@ const SignUp = () => {
         mode="outlined"
         secureTextEntry
         style={styles.input}
-        onChangeText={name => setForm({ ...form, confirmPassword })}
+        error={!!passwordError}
+        onChangeText={confirmPassword => {
+          setForm({...form, confirmPassword});
+
+          if (form.password && confirmPassword !== form.password) {
+            setPasswordError('Passwords do not match');
+          } else {
+            setPasswordError('');
+          }
+        }}
       />
+      {passwordError ? (
+        <Text style={styles.errorText}>{passwordError}</Text>
+      ) : null}
 
       <Button
         mode="contained"
         style={styles.button}
         onPress={handleSignUp}
-        contentStyle={{ paddingVertical: 6 }}
-      >
+        contentStyle={{paddingVertical: 6}}>
         Sign Up
       </Button>
 
-      <TouchableOpacity onPress={handleLogin}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={styles.loginText}>
           Already have an account? <Text style={styles.link}>Login</Text>
         </Text>
@@ -103,7 +170,7 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 24,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#a1c4f0',
     flexGrow: 1,
     justifyContent: 'center',
   },
@@ -120,7 +187,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    backgroundColor: '#4CAF50', // Green premium tone
+    backgroundColor: '#4CAF50',
     borderRadius: 8,
   },
   loginText: {
@@ -131,6 +198,13 @@ const styles = StyleSheet.create({
   link: {
     color: '#4CAF50',
     fontWeight: '600',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: -10,
+    marginBottom: 10,
+    marginLeft: 4,
+    fontSize: 12,
   },
 });
 

@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const features = [
   {
@@ -34,29 +34,31 @@ const features = [
 
 const LoggedInHome = () => {
   const navigation = useNavigation();
-  const handleShopping=()=>{
-    navigation.navigate('ProductCatelogue')
-  }
+  const handleShopping = () => {
+    // navigation.navigate('ProductCatelogue')
+    navigation.navigate('AddGroceryItem');
+  };
 
   return (
     <FlatList
       ListHeaderComponent={
         <>
           <Text style={styles.title}>Welcome to FreshBasket!</Text>
-  
+
           {/* Carousel Placeholder */}
           <View style={styles.carouselPlaceholder}>
             <Text style={styles.carouselText}>[Carousel Coming Soon]</Text>
           </View>
-  
+
           <Text style={styles.subtitle}>
-            Your one-stop shop for fresh groceries delivered straight to your doorstep.
+            Your one-stop shop for fresh groceries delivered straight to your
+            doorstep.
           </Text>
-  
+
           <TouchableOpacity style={styles.button} onPress={handleShopping}>
             <Text style={styles.buttonText}>Start Shopping Now</Text>
           </TouchableOpacity>
-  
+
           <Text style={styles.sectionTitle}>Why Choose Us?</Text>
         </>
       }
@@ -65,16 +67,19 @@ const LoggedInHome = () => {
       keyExtractor={(item, index) => index.toString()}
       columnWrapperStyle={styles.row}
       contentContainerStyle={styles.container}
-      renderItem={({ item }) => (
+      renderItem={({item}) => (
         <View style={styles.card}>
-          <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
+          <Image
+            source={item.image}
+            style={styles.cardImage}
+            resizeMode="cover"
+          />
           <Text style={styles.cardTitle}>{item.title}</Text>
           <Text style={styles.cardDesc}>{item.desc}</Text>
         </View>
       )}
     />
   );
-  
 };
 
 const styles = StyleSheet.create({

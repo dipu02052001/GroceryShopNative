@@ -63,7 +63,7 @@ const ForgetPassword = () => {
               <Button title="Reset Password" onPress={handlePasswordReset} color="#667eea" />
 
               <View style={styles.linksContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Text style={styles.link}>Back to Login</Text>
                 </TouchableOpacity>
               </View>
