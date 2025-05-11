@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import BottomTabNavigator from '../components/BottomTabNavigator';
+import useUserStore from '../store/useUserStore';
 
 const features = [
   {
@@ -40,11 +41,13 @@ const LoggedInHome = () => {
     navigation.navigate('AddGroceryItem');
   };
 
+  const user = useUserStore(state => state.user);
+
   return (
     <FlatList
       ListHeaderComponent={
         <>
-          <Text style={styles.title}>Welcome to FreshBasket!</Text>
+          <Text style={styles.title}>Welcome {user?.fname}!</Text>
 
           {/* Carousel Placeholder */}
           <View style={styles.carouselPlaceholder}>

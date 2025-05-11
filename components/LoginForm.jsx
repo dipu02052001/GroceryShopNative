@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import {LoginContext} from './LoginContext'; // ensure this exists
 import {useNavigation} from '@react-navigation/native';
+import useUserStore from '../store/useUserStore'; // adjust path if needed
 
 const LoginForm = () => {
   const [users, setUsers] = useState([]);
@@ -18,6 +19,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const {setIsLoggedIn} = useContext(LoginContext);
   const navigation = useNavigation();
+  const setUser = useUserStore(state => state.setUser);
 
   useEffect(() => {
     axios
@@ -43,8 +45,8 @@ const LoginForm = () => {
     );
 
     if (userFound) {
-      // Alert.alert('Login Successful!');
       setIsLoggedIn(true);
+      setUser(userFound); // 🔥 Save user globally
       navigation.navigate('BottomTabNavigator');
       setUsername('');
       setPassword('');

@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, TextInput, Button, Menu} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import useCartStore from '../store/useCartStore';
 
 const AddGroceryItem = () => {
   const [itemName, setItemName] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState(0);
   const [amount, setAmount] = useState('500 gm');
   const [menuVisible, setMenuVisible] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [comments, setComments] = useState('');
+  const navigation = useNavigation();
+  const addItem = useCartStore(state => state.addItem);
 
   const priceMap = {
     '100 gm': 10,
@@ -29,6 +33,24 @@ const AddGroceryItem = () => {
       text: 'black',
       primary: 'black', // active indicator color
     },
+  };
+
+  // const handleAddItem = () => {
+  //   alert('item Added to cart!');
+  //   navigation.navigate('BottomTabNavigator');
+  // };
+  const handleAddItem = () => {
+    const item = {
+      name: itemName,
+      quantity,
+      amount,
+      comments,
+      totalPrice,
+    };
+
+    addItem(item);
+    alert('Item added to cart!');
+    navigation.navigate('BottomTabNavigator'); // ensure "Cart" is the route name
   };
 
   return (
@@ -56,8 +78,11 @@ const AddGroceryItem = () => {
         <Text style={styles.label}>Quantity</Text>
         <TextInput
           value={quantity}
-          onChangeText={setQuantity}
+          onChangeText={text => {
+            if (/^\d*$/.test(text)) setQuantity(text); // allow only digits
+          }}
           mode="outlined"
+          keyboardType="numeric" // shows number keypad
           textColor="black"
           style={styles.input}
           theme={{
@@ -123,12 +148,11 @@ const AddGroceryItem = () => {
         <Text style={styles.price}>₹ {totalPrice}</Text>
       </View> */}
 
-        <Button
-          mode="contained"
-          onPress={() => alert('Item added')}
-          style={styles.button}>
-          ADD ITEM
-        </Button>
+        <TouchableOpacity onPress={() => handleAddItem()}>
+          <Button mode="contained" style={styles.button}>
+            ADD ITEM{' '}
+          </Button>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
