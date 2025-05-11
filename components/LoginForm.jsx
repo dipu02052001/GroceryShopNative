@@ -23,9 +23,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     axios
-      .get(
-        'https://groceryshop-spring-backend.onrender.com/customers/getCustomers',
-      )
+      .get('https://groceryshop-spring-backend.onrender.com/Signup/getAccounts')
       .then(response => {
         console.log('API Response:', response.data);
         setUsers(response.data);
@@ -46,7 +44,7 @@ const LoginForm = () => {
 
     if (userFound) {
       setIsLoggedIn(true);
-      setUser(userFound); // 🔥 Save user globally
+      setUser(userFound); //  Save user globally
       navigation.navigate('BottomTabNavigator');
       setUsername('');
       setPassword('');

@@ -42,12 +42,13 @@ const LoggedInHome = () => {
   };
 
   const user = useUserStore(state => state.user);
+  console.log(user);
 
   return (
     <FlatList
       ListHeaderComponent={
         <>
-          <Text style={styles.title}>Welcome {user?.fname}!</Text>
+          <Text style={styles.title}>Welcome {user?.name}!</Text>
 
           {/* Carousel Placeholder */}
           <View style={styles.carouselPlaceholder}>

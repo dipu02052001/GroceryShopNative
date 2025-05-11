@@ -1,15 +1,18 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image} from 'react-native';
+import {Image, View, Text, StyleSheet} from 'react-native';
 
 // Import your screens
 import LoggedInHome from '../screens/LoggedInHome';
 import ProductCategories from '../screens/ProductCategories';
 import Cart from './Cart';
+import useCartStore from '../store/useCartStore';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+  const uniqueCount = useCartStore(state => state.getUniqueItemCount());
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -22,20 +25,19 @@ const BottomTabNavigator = () => {
           else if (route.name === 'Cart')
             imageSource = require('../assets/cart.jpeg');
 
-          // Return Image component and apply the color to the image tint
           return (
-            <Image
-              source={imageSource}
-              style={{
-                width: 25, // Adjust the width and height of the image as per your needs
-                height: 25,
-                // tintColor: 'red', // Apply active/inactive tint color
-              }}
-            />
+            <View>
+              <Image source={imageSource} style={{width: 25, height: 25}} />
+              {route.name === 'Cart' && uniqueCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{uniqueCount}</Text>
+                </View>
+              )}
+            </View>
           );
         },
-        tabBarActiveTintColor: '#133f87', // Active color
-        tabBarInactiveTintColor: 'gray', // Inactive color
+        tabBarActiveTintColor: '#133f87',
+        tabBarInactiveTintColor: 'gray',
         headerShown: false,
       })}>
       <Tab.Screen name="Home" component={LoggedInHome} />
@@ -44,5 +46,24 @@ const BottomTabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  badge: {
+    position: 'absolute',
+    right: -6,
+    top: -3,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    minWidth: 18,
+    alignItems: 'center',
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+});
 
 export default BottomTabNavigator;

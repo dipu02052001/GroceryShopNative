@@ -40,7 +40,23 @@ const AddGroceryItem = () => {
   //   navigation.navigate('BottomTabNavigator');
   // };
   const handleAddItem = () => {
+    if (!itemName.trim()) {
+      alert('Item Name cannot be empty.');
+      return;
+    }
+
+    if (!quantity || parseInt(quantity) === 0) {
+      alert('Quantity must be greater than 0.');
+      return;
+    }
+
+    if (!amount) {
+      alert('Please select an amount.');
+      return;
+    }
+
     const item = {
+      id: Date.now().toString(),
       name: itemName,
       quantity,
       amount,
@@ -50,7 +66,7 @@ const AddGroceryItem = () => {
 
     addItem(item);
     alert('Item added to cart!');
-    navigation.navigate('BottomTabNavigator'); // ensure "Cart" is the route name
+    navigation.navigate('BottomTabNavigator');
   };
 
   return (

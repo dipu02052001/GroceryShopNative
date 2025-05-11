@@ -27,8 +27,11 @@ const SignUp = () => {
 
   const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
+  console.log(form);
   const handleSignUp = () => {
     const {name, email, mobile, password, confirmPassword} = form;
+
+    console.log(form);
 
     if (!name || !email || !mobile || !password || !confirmPassword) {
       Alert.alert('Validation', 'All fields are required!');
@@ -51,6 +54,11 @@ const SignUp = () => {
       .post(
         'https://groceryshop-spring-backend.onrender.com/Signup/createAccount',
         form,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
       )
       .then(response => {
         Alert.alert('Success', 'Customer registered successfully!');
@@ -72,7 +80,9 @@ const SignUp = () => {
         mode="outlined"
         style={styles.input}
         textColor="black"
-        onChangeText={name => setForm({...form, name})}
+        onChangeText={name => {
+          setForm({...form, name});
+        }}
       />
 
       <Text style={styles.label}>Email Address</Text>
@@ -208,4 +218,3 @@ const styles = StyleSheet.create({
 });
 
 export default SignUp;
- 
