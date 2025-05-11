@@ -45,7 +45,7 @@ const LoginForm = () => {
     if (userFound) {
       // Alert.alert('Login Successful!');
       setIsLoggedIn(true);
-      navigation.navigate('LoggedInHome');
+      navigation.navigate('BottomTabNavigator');
       setUsername('');
       setPassword('');
     } else {

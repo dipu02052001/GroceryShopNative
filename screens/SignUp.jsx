@@ -19,15 +19,13 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
   });
+
   const [mobileError, setMobileError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [emailError, setEmailError] = useState('');
-
   const navigation = useNavigation();
-  const validateEmail = email => {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
-  };
+
+  const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSignUp = () => {
     const {name, email, mobile, password, confirmPassword} = form;
@@ -36,21 +34,18 @@ const SignUp = () => {
       Alert.alert('Validation', 'All fields are required!');
       return;
     }
-    if (!/^\d{10}$/.test(form.mobile)) {
+    if (!/^\d{10}$/.test(mobile)) {
       Alert.alert('Validation', 'Mobile number must be exactly 10 digits!');
       return;
     }
-
     if (password !== confirmPassword) {
       Alert.alert('Validation', 'Passwords do not match!');
       return;
     }
-
-    if (!validateEmail(form.email)) {
+    if (!validateEmail(email)) {
       setEmailError('Invalid email format');
       return;
     }
-    
 
     axios
       .post(
@@ -58,7 +53,6 @@ const SignUp = () => {
         form,
       )
       .then(response => {
-        console.log('Signup Success:', response.data);
         Alert.alert('Success', 'Customer registered successfully!');
         navigation.goBack();
       })
@@ -72,73 +66,71 @@ const SignUp = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Create Account</Text>
 
+      <Text style={styles.label}>Full Name</Text>
       <TextInput
-        label="Full Name"
         value={form.name}
         mode="outlined"
         style={styles.input}
+        textColor="black"
         onChangeText={name => setForm({...form, name})}
       />
+
+      <Text style={styles.label}>Email Address</Text>
       <TextInput
-        label="Email Address"
         value={form.email}
         mode="outlined"
         keyboardType="email-address"
         style={styles.input}
+        textColor="black"
         error={!!emailError}
         onChangeText={email => {
           setForm({...form, email});
-
-          if (!validateEmail(email)) {
-            setEmailError('Invalid email format');
-          } else {
-            setEmailError('');
-          }
+          if (!validateEmail(email)) setEmailError('Invalid email format');
+          else setEmailError('');
         }}
       />
       {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
+      <Text style={styles.label}>Mobile Number</Text>
       <TextInput
-        label="Mobile Number"
         value={form.mobile}
         mode="outlined"
         keyboardType="phone-pad"
+        maxLength={10}
         style={styles.input}
+        textColor="black"
         error={!!mobileError}
-        maxLength={10} // ⬅️ This limits input to 10 characters
         onChangeText={mobile => {
           if (/^\d*$/.test(mobile)) {
-            // allow only digits
             setForm({...form, mobile});
-
-            if (mobile.length < 10) {
-              setMobileError('Mobile number must be 10 digits');
-            } else {
-              setMobileError('');
-            }
+            setMobileError(
+              mobile.length < 10 ? 'Mobile number must be 10 digits' : '',
+            );
           }
         }}
       />
       {mobileError ? <Text style={styles.errorText}>{mobileError}</Text> : null}
 
+      <Text style={styles.label}>Password</Text>
       <TextInput
-        label="Password"
         value={form.password}
         mode="outlined"
         secureTextEntry
         style={styles.input}
+        textColor="black"
         onChangeText={password => setForm({...form, password})}
       />
+
+      <Text style={styles.label}>Confirm Password</Text>
       <TextInput
-        label="Confirm Password"
         value={form.confirmPassword}
         mode="outlined"
         secureTextEntry
         style={styles.input}
+        textColor="black"
         error={!!passwordError}
         onChangeText={confirmPassword => {
           setForm({...form, confirmPassword});
-
           if (form.password && confirmPassword !== form.password) {
             setPasswordError('Passwords do not match');
           } else {
@@ -181,6 +173,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#1b1c1e',
   },
+  label: {
+    fontSize: 14,
+    color: '#000',
+    marginBottom: 4,
+    marginLeft: 4,
+    fontWeight: '500',
+  },
   input: {
     marginBottom: 16,
     backgroundColor: 'white',
@@ -209,3 +208,4 @@ const styles = StyleSheet.create({
 });
 
 export default SignUp;
+ 

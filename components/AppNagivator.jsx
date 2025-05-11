@@ -10,6 +10,7 @@ import ProductCatelogue from '../screens/ProductCatelogue';
 import ForgetPassword from './ForgetPassword';
 import ProductCategories from '../screens/ProductCategories';
 import AddGroceryItem from '../screens/AddGroceryItem';
+import BottomTabNavigator from './BottomTabNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,9 +63,58 @@ const AppNagivator = () => {
             headerTintColor: 'white',
           })}
         />
+        {/* <Stack.Screen
+          name="LoggedInHome"
+          component={BottomTabNavigator} // ✅ use tabs here
+          options={{
+            headerShown: false, // disable header for tabs
+          }}
+        /> */}
 
         <Stack.Screen name="ProductCatelogue" component={ProductCatelogue} />
         <Stack.Screen name="AddGroceryItem" component={AddGroceryItem} />
+        {/* <Stack.Screen
+          name="BottomTabNavigator"
+          component={BottomTabNavigator}
+          options={{
+            title: 'Grocery Store', // Optional: change title text if needed
+            //headerStyle: { backgroundColor: '#1870db' }, // red background
+            headerTintColor: 'white', // white text/icons
+            headerBackVisible: false,
+            // headerShown: false,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Home'}],
+                  });
+                }}>
+                <Text style={{color: 'white', marginRight: 15}}>Logout</Text>
+              </TouchableOpacity>
+            ),
+          }}
+        /> */}
+        <Stack.Screen
+          name="BottomTabNavigator"
+          component={BottomTabNavigator}
+          options={({navigation}) => ({
+            title: 'Grocery Store',
+            headerTintColor: 'white',
+            headerBackVisible: false,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Home'}],
+                  });
+                }}>
+                <Text style={{color: 'white', marginRight: 15}}>Logout</Text>
+              </TouchableOpacity>
+            ),
+          })}
+        />
 
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SetNewPassword" component={ForgetPassword} />

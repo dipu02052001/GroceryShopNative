@@ -8,6 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import BottomTabNavigator from '../components/BottomTabNavigator';
 
 const features = [
   {

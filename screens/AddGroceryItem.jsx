@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, TextInput, Button, Menu} from 'react-native-paper';
 
 const AddGroceryItem = () => {
@@ -8,6 +8,7 @@ const AddGroceryItem = () => {
   const [amount, setAmount] = useState('500 gm');
   const [menuVisible, setMenuVisible] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [comments, setComments] = useState('');
 
   const priceMap = {
     '100 gm': 10,
@@ -31,84 +32,105 @@ const AddGroceryItem = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Add Grocery Item</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Add Grocery Item</Text>
 
-      <Text style={styles.label}>Item Name</Text>
-      <TextInput
-        value={itemName}
-        onChangeText={setItemName}
-        mode="outlined"
-        textColor="black" // 🔥 This explicitly sets the input text color
-        style={styles.input}
-        theme={{
-          colors: {
-            text: 'black', // Input text color
-            primary: 'black', // Outline and cursor
-            background: 'white', // Background of input
-            placeholder: 'black', // Label/floating label
-          },
-        }}
-      />
+        <Text style={styles.label}>Item Name</Text>
+        <TextInput
+          value={itemName}
+          onChangeText={setItemName}
+          mode="outlined"
+          textColor="black" // 🔥 This explicitly sets the input text color
+          style={styles.input}
+          theme={{
+            colors: {
+              text: 'black', // Input text color
+              primary: 'black', // Outline and cursor
+              background: 'white', // Background of input
+              placeholder: 'black', // Label/floating label
+            },
+          }}
+        />
 
-      <Text style={styles.label}>Quantity</Text>
-      <TextInput
-        value={quantity}
-        onChangeText={setQuantity}
-        mode="outlined"
-        textColor="black"
-        style={styles.input}
-        theme={{colors: {text: 'black', primary: 'black', background: 'white'}}}
-      />
+        <Text style={styles.label}>Quantity</Text>
+        <TextInput
+          value={quantity}
+          onChangeText={setQuantity}
+          mode="outlined"
+          textColor="black"
+          style={styles.input}
+          theme={{
+            colors: {text: 'black', primary: 'black', background: 'white'},
+          }}
+        />
 
-      <Text style={styles.label}>Amount</Text>
-      <Menu
-        visible={menuVisible}
-        onDismiss={() => setMenuVisible(false)}
-        anchor={
-          <TouchableOpacity
-            onPress={() => setMenuVisible(true)}
-            style={styles.dropdownWrapper}>
-            <TextInput
-              value={amount}
-              editable={false}
-              mode="outlined"
-              textColor="black"
-              style={styles.input}
-              right={<TextInput.Icon icon="menu-down" />}
-              theme={{
-                colors: {text: 'black', primary: 'black', background: 'white'},
+        <Text style={styles.label}>Amount</Text>
+        <Menu
+          visible={menuVisible}
+          onDismiss={() => setMenuVisible(false)}
+          anchor={
+            <TouchableOpacity
+              onPress={() => setMenuVisible(true)}
+              style={styles.dropdownWrapper}>
+              <TextInput
+                value={amount}
+                editable={false}
+                mode="outlined"
+                textColor="black"
+                style={styles.input}
+                right={<TextInput.Icon icon="menu-down" />}
+                theme={{
+                  colors: {
+                    text: 'black',
+                    primary: 'black',
+                    background: 'white',
+                  },
+                }}
+                pointerEvents="none"
+              />
+            </TouchableOpacity>
+          }>
+          {Object.keys(priceMap).map(option => (
+            <Menu.Item
+              key={option}
+              onPress={() => {
+                setAmount(option);
+                setMenuVisible(false);
               }}
-              pointerEvents="none"
+              title={option}
             />
-          </TouchableOpacity>
-        }>
-        {Object.keys(priceMap).map(option => (
-          <Menu.Item
-            key={option}
-            onPress={() => {
-              setAmount(option);
-              setMenuVisible(false);
-            }}
-            title={option}
-          />
-        ))}
-      </Menu>
+          ))}
+        </Menu>
 
-      <View style={styles.priceContainer}>
+        <Text style={styles.label}>Comments</Text>
+
+        <TextInput
+          value={comments}
+          onChangeText={setComments}
+          mode="outlined"
+          multiline
+          numberOfLines={15}
+          placeholder="Add any special instructions or notes here..."
+          style={styles.textArea}
+          textColor="black"
+        />
+
+        {/* <View style={styles.priceContainer}>
         <Text variant="labelLarge" style={styles.totalPrice}>
           Total Price
         </Text>
         <Text style={styles.price}>₹ {totalPrice}</Text>
-      </View>
+      </View> */}
 
-      <Button
-        mode="contained"
-        onPress={() => console.log('Item added')}
-        style={styles.button}>
-        ADD ITEM
-      </Button>
-    </View>
+        <Button
+          mode="contained"
+          onPress={() => alert('Item added')}
+          style={styles.button}>
+          ADD ITEM
+        </Button>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -149,10 +171,12 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: 'green',
   },
+  textArea: {backgroundColor: 'white', padding: 5},
   dropdownWrapper: {
     marginBottom: 15,
   },
   button: {
+    marginTop: 30,
     borderRadius: 6,
     paddingVertical: 4,
   },
