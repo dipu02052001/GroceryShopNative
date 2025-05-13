@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,21 +7,34 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import useCartStore from '../store/useCartStore';
+import useUserStore from '../store/useUserStore';
+import createCartStore from '../store/createCartStore';
 
 const Cart = () => {
-  const cartItems = useCartStore(state => state.cartItems);
-  const removeItem = useCartStore(state => state.removeItem);
-  const updateItem = useCartStore(state => state.updateItem);
+  const user = useUserStore(state => state.user);
+  const userSignUpID = user?.signup_id;
+
+  const cartStore = createCartStore(userSignUpID);
+  const cartItems = cartStore.getState().cartItems;
+  const fetchCart = cartStore.getState().fetchCart;
+  const removeItem = cartStore.getState().removeItem;
+  const updateItem = cartStore.getState().updateItem;
 
   const [editingItemId, setEditingItemId] = useState(null);
   const [editedName, setEditedName] = useState('');
   const [editedQuantity, setEditedQuantity] = useState('');
   const [editedComments, setEditedComments] = useState('');
 
+  useEffect(() => {
+    if (userSignUpID) {
+      console.log(userSignUpID);
+      fetchCart();
+    }
+  }, [userSignUpID]);
+
   const startEditing = item => {
-    setEditingItemId(item.id);
-    setEditedName(item.name);
+    setEditingItemId(item.cart_id);
+    setEditedName(item.itemName);
     setEditedQuantity(String(item.quantity));
     setEditedComments(item.comments || '');
   };
@@ -29,8 +42,9 @@ const Cart = () => {
   const saveEdit = id => {
     const quantityNum = parseInt(editedQuantity);
     if (!isNaN(quantityNum) && quantityNum > 0 && editedName.trim() !== '') {
-      updateItem(id, {
-        name: editedName.trim(),
+      updateItem({
+        cart_id: id,
+        itemName: editedName.trim(),
         quantity: quantityNum,
         comments: editedComments.trim(),
       });
@@ -50,10 +64,12 @@ const Cart = () => {
       ) : (
         <FlatList
           data={cartItems}
-          keyExtractor={item => item.id}
+          keyExtractor={item =>
+            item.cart_id?.toString() || item.id?.toString()
+          }
           renderItem={({item}) => (
             <View style={styles.cartItem}>
-              {editingItemId === item.id ? (
+              {editingItemId === item.cart_id ? (
                 <>
                   <TextInput
                     style={styles.input}
@@ -75,14 +91,14 @@ const Cart = () => {
                     placeholder="Comments"
                   />
                   <TouchableOpacity
-                    onPress={() => saveEdit(item.id)}
+                    onPress={() => saveEdit(item.cart_id)}
                     style={styles.saveButton}>
                     <Text style={styles.saveText}>Save</Text>
                   </TouchableOpacity>
                 </>
               ) : (
                 <>
-                  <Text style={styles.itemName}>Product: {item.name}</Text>
+                  <Text style={styles.itemName}>Product: {item.itemName}</Text>
                   <Text style={styles.itemQuantity}>
                     Quantity: {item.quantity}
                   </Text>
@@ -91,19 +107,14 @@ const Cart = () => {
                       Comments: {item.comments}
                     </Text>
                   ) : null}
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      marginTop: 10,
-                    }}>
+                  <View style={styles.buttonRow}>
                     <TouchableOpacity
                       onPress={() => startEditing(item)}
                       style={[styles.editButton, {marginRight: 15}]}>
                       <Text style={styles.editText}>Edit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => removeItem(item.id)}
+                      onPress={() => removeItem(item.cart_id)}
                       style={styles.removeButton}>
                       <Text style={styles.removeText}>Remove</Text>
                     </TouchableOpacity>
@@ -162,7 +173,6 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 5,
-    marginRight: 10,
   },
   editText: {color: 'white', fontSize: 16},
   saveButton: {
@@ -197,6 +207,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     textAlign: 'center',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
   },
 });
 

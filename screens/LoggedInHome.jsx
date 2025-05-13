@@ -42,7 +42,7 @@ const LoggedInHome = () => {
   };
 
   const user = useUserStore(state => state.user);
-  console.log(user);
+  //console.log('user data', user);
 
   return (
     <FlatList

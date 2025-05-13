@@ -3,16 +3,23 @@ import {View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {Text, TextInput, Button, Menu} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import useCartStore from '../store/useCartStore';
+import createCartStore from '../store/createCartStore';
+import useUserStore from '../store/useUserStore';
 
 const AddGroceryItem = () => {
   const [itemName, setItemName] = useState('');
   const [quantity, setQuantity] = useState(0);
-  const [amount, setAmount] = useState('500 gm');
+  const [weight, setAmount] = useState('100 gm');
   const [menuVisible, setMenuVisible] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [comments, setComments] = useState('');
   const navigation = useNavigation();
-  const addItem = useCartStore(state => state.addItem);
+  const user = useUserStore(state => state.user);
+  let userSignUpID = user?.signup_id;
+  console.log('User used in Add groceryItem ', userSignUpID);
+  // const addItem = useCartStore(state => state.addItem);
+  const cartStore = createCartStore(userSignUpID)
+  const addItem = cartStore.getState().addItem;
 
   const priceMap = {
     '100 gm': 10,
@@ -23,10 +30,10 @@ const AddGroceryItem = () => {
   };
 
   useEffect(() => {
-    const unitPrice = priceMap[amount] || 0;
+    const unitPrice = priceMap[weight] || 0;
     const qty = parseInt(quantity);
     setTotalPrice(!isNaN(qty) ? unitPrice * qty : 0);
-  }, [quantity, amount]);
+  }, [quantity, weight]);
 
   const redTextTheme = {
     colors: {
@@ -50,21 +57,20 @@ const AddGroceryItem = () => {
       return;
     }
 
-    if (!amount) {
+    if (!weight) {
       alert('Please select an amount.');
       return;
     }
 
     const item = {
-      id: Date.now().toString(),
-      name: itemName,
-      quantity,
-      amount,
+      itemName,
+      quantity: parseInt(quantity),
+      weight,
       comments,
-      totalPrice,
+      // totalPrice,
     };
 
-    addItem(item);
+    addItem(userSignUpID, item);
     alert('Item added to cart!');
     navigation.navigate('BottomTabNavigator');
   };
@@ -74,6 +80,7 @@ const AddGroceryItem = () => {
       <View style={styles.container}>
         <Text style={styles.title}>Add Grocery Item</Text>
 
+        {/* Item Name Input */}
         <Text style={styles.label}>Item Name</Text>
         <TextInput
           value={itemName}
@@ -91,6 +98,7 @@ const AddGroceryItem = () => {
           }}
         />
 
+        {/* Quantity Input */}
         <Text style={styles.label}>Quantity</Text>
         <TextInput
           value={quantity}
@@ -106,7 +114,8 @@ const AddGroceryItem = () => {
           }}
         />
 
-        <Text style={styles.label}>Amount</Text>
+        {/* Weight Dropdown */}
+        <Text style={styles.label}>Weight</Text>
         <Menu
           visible={menuVisible}
           onDismiss={() => setMenuVisible(false)}
@@ -115,7 +124,7 @@ const AddGroceryItem = () => {
               onPress={() => setMenuVisible(true)}
               style={styles.dropdownWrapper}>
               <TextInput
-                value={amount}
+                value={weight}
                 editable={false}
                 mode="outlined"
                 textColor="black"
@@ -144,29 +153,23 @@ const AddGroceryItem = () => {
           ))}
         </Menu>
 
+        {/* Comments */}
         <Text style={styles.label}>Comments</Text>
-
         <TextInput
           value={comments}
           onChangeText={setComments}
           mode="outlined"
           multiline
-          numberOfLines={15}
-          placeholder="Add any special instructions or notes here..."
+          numberOfLines={4}
+          placeholder="Add any special instructions..."
           style={styles.textArea}
           textColor="black"
         />
 
-        {/* <View style={styles.priceContainer}>
-        <Text variant="labelLarge" style={styles.totalPrice}>
-          Total Price
-        </Text>
-        <Text style={styles.price}>₹ {totalPrice}</Text>
-      </View> */}
-
-        <TouchableOpacity onPress={() => handleAddItem()}>
+        {/* Add Button */}
+        <TouchableOpacity onPress={handleAddItem}>
           <Button mode="contained" style={styles.button}>
-            ADD ITEM{' '}
+            ADD ITEM
           </Button>
         </TouchableOpacity>
       </View>
@@ -189,29 +192,17 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: 'white',
   },
-  totalPrice: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: 'black',
-  },
-
   label: {
     marginBottom: 4,
     fontSize: 16,
     color: 'black',
     fontWeight: '600',
   },
-  priceContainer: {
-    marginTop: 10,
-    marginBottom: 20,
+  textArea: {
+    backgroundColor: 'white',
+    padding: 5,
+    marginBottom: 15,
   },
-  price: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginTop: 4,
-    color: 'green',
-  },
-  textArea: {backgroundColor: 'white', padding: 5},
   dropdownWrapper: {
     marginBottom: 15,
   },

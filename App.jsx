@@ -6,8 +6,6 @@ import {Provider as PaperProvider} from 'react-native-paper'; // ✅ Import this
 function App() {
   return (
     <PaperProvider>
-      {' '}
-      {/* ✅ Wrap here */}
       <LoginProvider>
         <AppNagivator />
       </LoginProvider>
