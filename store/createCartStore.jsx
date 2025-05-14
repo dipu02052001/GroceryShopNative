@@ -51,6 +51,7 @@ const createCartStore = userId => {
               console.error('Error adding item:', err.message);
             }
           },
+          
 
           getUniqueItemCount: () => get().cartItems.length,
         }),

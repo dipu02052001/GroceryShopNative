@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -11,6 +11,9 @@ import ForgetPassword from './ForgetPassword';
 import ProductCategories from '../screens/ProductCategories';
 import AddGroceryItem from '../screens/AddGroceryItem';
 import BottomTabNavigator from './BottomTabNavigator';
+import About from '../screens/About';
+import Contact from '../screens/Contact';
+import HeaderMenu from './HeaderMenu';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +29,7 @@ const AppNagivator = () => {
     // </NavigationContainer>
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="LoggedInHome"
         screenOptions={{
           headerStyle: {backgroundColor: '#1e81b0'},
           headerTintColor: 'white', // default title color
@@ -45,18 +48,10 @@ const AppNagivator = () => {
           name="LoggedInHome"
           component={LoggedInHome}
           options={({navigation}) => ({
-            title: 'Welcome',
+            title: 'Grocery Store',
             headerBackVisible: false,
             gestureEnabled: false,
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => {
-                  // Handle logout logic
-                  navigation.goBack('Home'); // or navigation.navigate('Home')
-                }}>
-                <Text style={{color: 'white', marginRight: 15}}>Logout</Text>
-              </TouchableOpacity>
-            ),
+            headerRight: () => <HeaderMenu navigation={navigation} />,
             headerStyle: {
               backgroundColor: '#1e81b0',
             },
@@ -102,13 +97,32 @@ const AppNagivator = () => {
             title: 'Grocery Store',
             headerTintColor: 'white',
             headerBackVisible: false,
+            headerStyle: {
+              backgroundColor: '#1e81b0',
+            },
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.reset({
-                    index: 0,
-                    routes: [{name: 'Home'}],
-                  });
+                  Alert.alert(
+                    'Logout Confirmation',
+                    'Do you want to logout from Shopping?',
+                    [
+                      {
+                        text: 'Cancel',
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'OK',
+                        onPress: () => {
+                          navigation.reset({
+                            index: 0,
+                            routes: [{name: 'LoggedInHome'}],
+                          });
+                        },
+                      },
+                    ],
+                    {cancelable: true},
+                  );
                 }}>
                 <Text style={{color: 'white', marginRight: 15}}>Logout</Text>
               </TouchableOpacity>
@@ -119,6 +133,22 @@ const AppNagivator = () => {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SetNewPassword" component={ForgetPassword} />
         <Stack.Screen name="ProductCategory" component={ProductCategories} />
+        <Stack.Screen
+          name="About"
+          component={About}
+          options={{
+            headerBackVisible: false,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ContactUs"
+          component={Contact}
+          options={{
+            headerBackVisible: false,
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

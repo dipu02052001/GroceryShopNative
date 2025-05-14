@@ -17,6 +17,7 @@ const LoginForm = () => {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const {setIsLoggedIn} = useContext(LoginContext);
   const navigation = useNavigation();
   const setUser = useUserStore(state => state.setUser);
@@ -34,6 +35,8 @@ const LoginForm = () => {
   }, []);
 
   const handleLogin = () => {
+
+    setLoading(true);
     if (!username || !password) {
       Alert.alert('Validation', 'All fields are required!');
       return;
@@ -49,10 +52,12 @@ const LoginForm = () => {
       setUsername('');
       setPassword('');
     } else {
+      setLoading(true);
       Alert.alert('Login Failed', 'Invalid credentials.');
       setUsername('');
       setPassword('');
     }
+    setLoading(false);
   };
 
   const handleForget = () => {
