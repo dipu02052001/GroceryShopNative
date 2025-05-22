@@ -6,18 +6,21 @@ import {Image, View, Text, StyleSheet} from 'react-native';
 import LoggedInHome from '../screens/LoggedInHome';
 import ProductCategories from '../screens/ProductCategories';
 import Cart from './Cart';
-import useCartStore from '../store/useCartStore';
-import useAuthStore from '../store/useAuthStore';
+//import useCartStore from '../store/useCartStore';
+//import useAuthStore from '../store/useAuthStore';
+import Profile from '../screens/Profile';
+import useUserStore from '../store/useUserStore';
+import createCartStore from '../store/createCartStore';
 
 const Tab = createBottomTabNavigator();
 
 
 const BottomTabNavigator = () => {
-// const user = useAuthStore(state => state.user);
+const user = useUserStore(state => state.user);
 // const userId = useAuthStore(state => state.user?.id)
 // console.log("Current user:", userId);
 // console.log("User ID being used:", user?.signup_id);
-  const uniqueCount = useCartStore(state => state.getUniqueItemCount());
+  const uniqueCount = createCartStore(state => state.getUniqueItemCount());
 
   return (
     <Tab.Navigator
@@ -30,6 +33,8 @@ const BottomTabNavigator = () => {
             imageSource = require('../assets/category.png');
           else if (route.name === 'Cart')
             imageSource = require('../assets/cart.jpeg');
+           else if (route.name === 'Profile')
+            imageSource = require('../assets/grocery_1.jpg');
 
           return (
             <View>
@@ -47,8 +52,11 @@ const BottomTabNavigator = () => {
         headerShown: false,
       })}>
       <Tab.Screen name="Home" component={LoggedInHome} />
-      <Tab.Screen name="Category" component={ProductCategories} />
+      {user?.name === 'Test1' && (
+        <Tab.Screen name="Category" component={ProductCategories} />
+      )}
       <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };

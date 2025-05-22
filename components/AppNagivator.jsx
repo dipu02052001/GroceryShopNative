@@ -1,5 +1,4 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -14,6 +13,8 @@ import BottomTabNavigator from './BottomTabNavigator';
 import About from '../screens/About';
 import Contact from '../screens/Contact';
 import HeaderMenu from './HeaderMenu';
+//import useAuthStore from '../store/useAuthStore';
+import useUserStore from '../store/useUserStore';
 
 const Stack = createNativeStackNavigator();
 
@@ -114,6 +115,7 @@ const AppNagivator = () => {
                       {
                         text: 'OK',
                         onPress: () => {
+                          useUserStore.getState().clearUser();
                           navigation.reset({
                             index: 0,
                             routes: [{name: 'LoggedInHome'}],

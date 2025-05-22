@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import BottomTabNavigator from '../components/BottomTabNavigator';
+//import BottomTabNavigator from '../components/BottomTabNavigator';
 import useUserStore from '../store/useUserStore';
 
 const features = [
@@ -35,13 +36,20 @@ const features = [
 ];
 
 const LoggedInHome = () => {
+  const user = useUserStore(state => state.user);
+
   const navigation = useNavigation();
   const handleShopping = () => {
     // navigation.navigate('ProductCatelogue')
-    navigation.navigate('AddGroceryItem');
+    if (!user) {
+      Alert.alert('Please login to start buying');
+    } else {
+      navigation.navigate('AddGroceryItem'); // Or your shopping screen
+    }
+    //navigation.navigate('AddGroceryItem');
   };
 
-  const user = useUserStore(state => state.user);
+  
   //console.log('user data', user);
 
   return (
