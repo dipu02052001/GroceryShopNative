@@ -4,6 +4,8 @@
 
 # Xcode
 #
+.bundle
+__tests__
 build/
 *.pbxuser
 !default.pbxuser
@@ -21,6 +23,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 **/.xcode.env.local
+
+# vscode 
+.vscode
 
 # Android/IntelliJ
 #
