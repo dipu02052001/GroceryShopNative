@@ -54,7 +54,7 @@ jobs:
       - name: List APK files for verification
         run: |
            ls -l android/app/build/outputs/apk/release/
-           cp android/app/build/outputs/apk/release/app-release.apk public/grocery-app.apk
+           cp android/app/build/outputs/apk/release/app-release.apk docs/grocery-app.apk
 
       # - name: Upload APK artifact
       #   uses: actions/upload-artifact@v3.1.2
