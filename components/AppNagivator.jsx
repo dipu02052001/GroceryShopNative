@@ -96,7 +96,7 @@ const AppNagivator = () => {
           component={BottomTabNavigator}
           options={({navigation}) => ({
             title: 'Grocery Store',
-            headerTintColor: 'white',
+            headerTintColor: 'black',
             headerBackVisible: false,
             headerStyle: {
               backgroundColor: '#1e81b0',
