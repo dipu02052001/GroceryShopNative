@@ -21,6 +21,7 @@ const LoginForm = () => {
   const {setIsLoggedIn} = useContext(LoginContext);
   const navigation = useNavigation();
   const setUser = useUserStore(state => state.setUser);
+  //console.log("new user"+setUser);
 
   useEffect(() => {
     axios

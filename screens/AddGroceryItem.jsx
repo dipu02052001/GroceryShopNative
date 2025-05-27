@@ -6,6 +6,7 @@ import useCartStore from '../store/useCartStore';
 import createCartStore from '../store/createCartStore';
 import useUserStore from '../store/useUserStore';
 
+
 const AddGroceryItem = () => {
   const [itemName, setItemName] = useState('');
   const [quantity, setQuantity] = useState(0);
@@ -17,7 +18,7 @@ const AddGroceryItem = () => {
   const user = useUserStore(state => state.user);
   let userSignUpID = user?.signup_id;
   console.log('User used in Add groceryItem ', userSignUpID);
-  // const addItem = useCartStore(state => state.addItem);
+  const adItem = useCartStore(state => state.addItem);
   const cartStore = createCartStore(userSignUpID)
   const addItem = cartStore.getState().addItem;
 

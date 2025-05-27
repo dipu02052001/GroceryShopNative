@@ -13,7 +13,6 @@ import BottomTabNavigator from './BottomTabNavigator';
 import About from '../screens/About';
 import Contact from '../screens/Contact';
 import HeaderMenu from './HeaderMenu';
-//import useAuthStore from '../store/useAuthStore';
 import useUserStore from '../store/useUserStore';
 
 const Stack = createNativeStackNavigator();

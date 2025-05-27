@@ -10,8 +10,8 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import useUserStore from '../store/useUserStore';
 import React, { useState, useRef } from 'react';
+import useUserStore from '../store/useUserStore';
 
 const { width } = Dimensions.get('window');
 
@@ -48,6 +48,7 @@ const features = [
 
 const LoggedInHome = () => {
   const user = useUserStore(state => state.user);
+  console.log("user :"+user);
   const navigation = useNavigation();
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef(null);
@@ -75,10 +76,9 @@ const LoggedInHome = () => {
           data={carouselData}
           ref={carouselRef}
           horizontal
-          pagingEnabled
           showsHorizontalScrollIndicator={false}
           onScroll={handleScroll}
-          scrollEventThrottle={16}
+          scrollEventThrottle={21}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <Image source={item.image} style={styles.carouselImage} />
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   carouselImage: {
     width: width,
-    height: 150,
+    height: 190,
   },
   pagination: {
     flexDirection: 'row',
