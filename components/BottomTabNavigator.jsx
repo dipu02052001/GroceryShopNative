@@ -9,7 +9,7 @@ import Cart from './Cart';
 //import useCartStore from '../store/useCartStore';
 import Profile from '../screens/Profile';
 import useUserStore from '../store/useUserStore';
-import createCartStore from '../store/createCartStore';
+import useCartCount from '../store/useCartCount';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,8 +17,8 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
 const user = useUserStore(state => state.user);
 // console.log("Current user:", userId);
-// console.log("User ID being used:", user?.signup_id);
-  const uniqueCount = createCartStore(state => state.getUniqueItemCount());
+  console.log("User ID being used:", user?.signup_id);
+  const uniqueCount = useCartCount(user?.signup_id);
 
   return (
     <Tab.Navigator
