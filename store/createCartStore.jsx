@@ -25,7 +25,7 @@ const createCartStore = userId => {
             }
           },
 
-          addItem: async (userId, item) => {
+          addItem: async (userSignUpID, item) => {
             try {
               await axios.post(
                 `https://groceryshop-spring-backend.onrender.com/Cart/add/${userSignUpID}`,
@@ -38,7 +38,7 @@ const createCartStore = userId => {
             }
           },
 
-          updateItem: async (itemId, updatedItem) => {
+          updateItem: async (userSignUpID, updatedItem) => {
             try {
               await axios.put(
                 `https://groceryshop-spring-backend.onrender.com/Cart/update/${userSignUpID}`,
