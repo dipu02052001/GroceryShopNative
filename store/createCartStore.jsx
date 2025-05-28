@@ -7,10 +7,8 @@ import useUserStore from './useUserStore';
 const stores = {};
 
 const createCartStore = userId => {
-  const user = useUserStore(state => state.user);
-
-  let userSignUpID = user?.signup_id;
-  console.log('User used in CreateCartStore ', user?.signup_id);
+  const userSignUpID = userId;
+  console.log('User used in CreateCartStore ', userSignUpID);
   if (!stores[userId]) {
     const store = createStore(
       persist(

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect , useRef} from 'react';
 import {
   View,
   Text,
@@ -11,15 +11,12 @@ import useUserStore from '../store/useUserStore';
 import createCartStore from '../store/createCartStore';
 
 const Cart = () => {
-  const user = useUserStore(state => state.user);
+ const user = useUserStore(state => state.user);
   const userSignUpID = user?.signup_id;
 
-  const cartStore = createCartStore(userSignUpID);
-  const cartItems = cartStore.getState().cartItems;
-  const fetchCart = cartStore.getState().fetchCart;
-  const removeItem = cartStore.getState().removeItem;
-  const updateItem = cartStore.getState().updateItem;
+  const storeRef = useRef(null); // Local store reference
 
+  const [cartItems, setCartItems] = useState([]);
   const [editingItemId, setEditingItemId] = useState(null);
   const [editedName, setEditedName] = useState('');
   const [editedQuantity, setEditedQuantity] = useState('');
@@ -27,8 +24,18 @@ const Cart = () => {
 
   useEffect(() => {
     if (userSignUpID) {
-      console.log(userSignUpID);
-      fetchCart();
+      storeRef.current = createCartStore(userSignUpID);
+      const fetchCart = storeRef.current.getState().fetchCart;
+      fetchCart().then(() => {
+        setCartItems(storeRef.current.getState().cartItems);
+      });
+
+      const unsubscribe = storeRef.current.subscribe(
+        state => state.cartItems,
+        items => setCartItems(items),
+      );
+
+      return () => unsubscribe?.();
     }
   }, [userSignUpID]);
 
@@ -42,7 +49,7 @@ const Cart = () => {
   const saveEdit = id => {
     const quantityNum = parseInt(editedQuantity);
     if (!isNaN(quantityNum) && quantityNum > 0 && editedName.trim() !== '') {
-      updateItem({
+      storeRef.current.getState().updateItem({
         cart_id: id,
         itemName: editedName.trim(),
         quantity: quantityNum,
@@ -53,6 +60,10 @@ const Cart = () => {
     setEditedQuantity('');
     setEditedName('');
     setEditedComments('');
+  };
+
+  const removeItem = id => {
+    storeRef.current.getState().removeItem(id);
   };
 
   return (
