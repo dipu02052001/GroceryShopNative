@@ -1,8 +1,7 @@
-import {createStore} from 'zustand/vanilla';
-import {persist} from 'zustand/middleware';
+import { createStore } from 'zustand/vanilla';
+import { persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import useUserStore from './useUserStore';
 
 const stores = {};
 
@@ -20,37 +19,47 @@ const createCartStore = userId => {
               const res = await axios.get(
                 `https://groceryshop-spring-backend.onrender.com/Cart/${userSignUpID}`,
               );
-              set({cartItems: res.data});
+              set({ cartItems: res.data });
             } catch (err) {
               console.error('Error fetching cart:', err.message);
             }
           },
 
           addItem: async (userId, item) => {
-            console.log('Adding item for user:', userId);
-            console.log('Payload:', JSON.stringify(item));
             try {
               await axios.post(
                 `https://groceryshop-spring-backend.onrender.com/Cart/add/${userSignUpID}`,
                 item,
               );
-              const exists = get().cartItems.find(i => i.id === item.id);
-              if (exists) {
-                set({
-                  cartItems: get().cartItems.map(i =>
-                    i.id === item.id
-                      ? {...i, quantity: i.quantity + item.quantity}
-                      : i,
-                  ),
-                });
-              } else {
-                set({cartItems: [...get().cartItems, item]});
-              }
+              // Always refresh the cart from the backend
+              await get().fetchCart();
             } catch (err) {
               console.error('Error adding item:', err.message);
             }
           },
-          
+
+          updateItem: async (itemId, updatedItem) => {
+            try {
+              await axios.put(
+                `https://groceryshop-spring-backend.onrender.com/Cart/update/${userSignUpID}`,
+                updatedItem,
+              );
+              await get().fetchCart(); // refresh after update
+            } catch (err) {
+              console.error('Error updating item:', err.message);
+            }
+          },
+
+          removeItem: async itemId => {
+            try {
+              await axios.delete(
+                `https://groceryshop-spring-backend.onrender.com/Cart/remove/${userSignUpID}`,
+              );
+              await get().fetchCart(); // refresh after delete
+            } catch (err) {
+              console.error('Error removing item:', err.message);
+            }
+          },
 
           getUniqueItemCount: () => get().cartItems.length,
         }),
