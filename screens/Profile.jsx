@@ -1,11 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+
 
 const Profile = () => {
   return (
-    <View>
+    <ScrollView>
       <Text>Profile</Text>
-    </View>
+      <View>
+        <Contact/>
+        <About/>
+      </View>
+    </ScrollView>
   )
 }
 
