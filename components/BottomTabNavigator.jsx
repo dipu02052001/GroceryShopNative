@@ -32,7 +32,7 @@ const user = useUserStore(state => state.user);
           else if (route.name === 'Cart')
             imageSource = require('../assets/cart.jpeg');
            else if (route.name === 'Profile')
-            imageSource = require('../assets/grocery_1.jpg');
+            imageSource = require('../assets/user.png');
 
           return (
             <View>
