@@ -12,6 +12,7 @@ import createCartStore from '../store/createCartStore';
 
 
 const Cart = ({refreshCartCount}) => {
+
  const user = useUserStore(state => state.user);
   const userSignUpID = user?.signup_id;
 

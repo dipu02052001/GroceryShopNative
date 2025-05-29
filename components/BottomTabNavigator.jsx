@@ -30,7 +30,7 @@ const BottomTabNavigator = () => {
             imageSource = require('../assets/category.png');
           else if (route.name === 'Cart')
             imageSource = require('../assets/cart.jpeg');
-          else if (route.name === 'Profile')
+           else if (route.name === 'Profile')
             imageSource = require('../assets/user.png');
 
           return (
