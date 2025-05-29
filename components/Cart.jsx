@@ -10,16 +10,23 @@ import {
 import useUserStore from '../store/useUserStore';
 import createCartStore from '../store/createCartStore';
 
-const Cart = () => {
+
+const Cart = ({refreshCartCount}) => {
  const user = useUserStore(state => state.user);
   const userSignUpID = user?.signup_id;
 
   const storeRef = useRef(null); // Local store reference
 
+  const refreshCart = async () => {
+           await storeRef.current.getState().fetchCart();
+           setCartItems([...storeRef.current.getState().cartItems]); // clone array
+   };
+
   const [cartItems, setCartItems] = useState([]);
   const [editingItemId, setEditingItemId] = useState(null);
   const [editedName, setEditedName] = useState('');
   const [editedQuantity, setEditedQuantity] = useState('');
+  const [editedWeight, setEditedWeight] = useState('');
   const [editedComments, setEditedComments] = useState('');
 
   useEffect(() => {
@@ -43,27 +50,34 @@ const Cart = () => {
     setEditingItemId(item.cart_id);
     setEditedName(item.itemName);
     setEditedQuantity(String(item.quantity));
+    setEditedWeight(item.weight);
     setEditedComments(item.comments || '');
   };
 
-  const saveEdit = id => {
+  const saveEdit = async (id) => {
     const quantityNum = parseInt(editedQuantity);
     if (!isNaN(quantityNum) && quantityNum > 0 && editedName.trim() !== '') {
-      storeRef.current.getState().updateItem({
-        cart_id: id,
+     await storeRef.current.getState().updateItem(id,{
         itemName: editedName.trim(),
         quantity: quantityNum,
+        weight: editedWeight,
         comments: editedComments.trim(),
       });
+      await refreshCart();
+      refreshCartCount();
     }
     setEditingItemId(null);
     setEditedQuantity('');
+    setEditedWeight('');
     setEditedName('');
     setEditedComments('');
+    
   };
 
-  const removeItem = id => {
-    storeRef.current.getState().removeItem(id);
+  const removeItem = async (id) => {
+    await storeRef.current.getState().removeItem(id);
+    await refreshCart();
+    refreshCartCount();  
   };
 
   return (
@@ -97,6 +111,12 @@ const Cart = () => {
                   />
                   <TextInput
                     style={styles.input}
+                    value={editedWeight}
+                    onChangeText={setEditedWeight}
+                    placeholder="Weight"
+                  />
+                  <TextInput
+                    style={styles.input}
                     value={editedComments}
                     onChangeText={setEditedComments}
                     placeholder="Comments"
@@ -111,7 +131,7 @@ const Cart = () => {
                 <>
                   <Text style={styles.itemName}>Product: {item.itemName}</Text>
                   <Text style={styles.itemQuantity}>
-                    Quantity: {item.quantity}
+                    Quantity: {item.quantity}                     Weight: {item.weight}
                   </Text>
                   {item.comments ? (
                     <Text style={styles.itemComments}>
@@ -158,7 +178,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {fontSize: 18, textAlign: 'center', color: 'gray'},
   cartItem: {
-    backgroundColor: 'white',
+    backgroundColor: 'gold',
     padding: 15,
     marginBottom: 10,
     borderRadius: 10,

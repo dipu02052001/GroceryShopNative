@@ -19,7 +19,7 @@ const createCartStore = userId => {
               const res = await axios.get(
                 `https://groceryshop-spring-backend.onrender.com/Cart/${userSignUpID}`,
               );
-              set({ cartItems: res.data });
+              set({ cartItems: [...res.data] });
             } catch (err) {
               console.error('Error fetching cart:', err.message);
             }
@@ -38,10 +38,10 @@ const createCartStore = userId => {
             }
           },
 
-          updateItem: async (userSignUpID, updatedItem) => {
+          updateItem: async (cart_id, updatedItem) => {
             try {
-              await axios.put(
-                `https://groceryshop-spring-backend.onrender.com/Cart/update/${userSignUpID}`,
+              await axios.patch(
+                `https://groceryshop-spring-backend.onrender.com/Cart/update/${cart_id}`,
                 updatedItem,
               );
               await get().fetchCart(); // refresh after update
@@ -50,10 +50,10 @@ const createCartStore = userId => {
             }
           },
 
-          removeItem: async userSignUpID => {
+          removeItem: async cart_id => {
             try {
               await axios.delete(
-                `https://groceryshop-spring-backend.onrender.com/Cart/remove/${userSignUpID}`,
+                `https://groceryshop-spring-backend.onrender.com/Cart/remove/${cart_id}`,
               );
               await get().fetchCart(); // refresh after delete
             } catch (err) {
@@ -61,7 +61,7 @@ const createCartStore = userId => {
             }
           },
 
-          getUniqueItemCount: () => get().cartItems.length,
+          getUniqueItemCount: async () => get().cartItems.length,
         }),
         {
           name: `cart-${userSignUpID}`,

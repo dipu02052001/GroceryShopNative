@@ -2,36 +2,35 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image, View, Text, StyleSheet} from 'react-native';
 
-// Import your screens
+// Screens
 import LoggedInHome from '../screens/LoggedInHome';
 import ProductCategories from '../screens/ProductCategories';
 import Cart from './Cart';
-//import useCartStore from '../store/useCartStore';
 import Profile from '../screens/Profile';
+
+// Stores
 import useUserStore from '../store/useUserStore';
 import useCartCount from '../store/useCartCount';
 
 const Tab = createBottomTabNavigator();
 
-
 const BottomTabNavigator = () => {
-const user = useUserStore(state => state.user);
-// console.log("Current user:", userId);
-  console.log("User ID being used:", user?.signup_id);
-  const uniqueCount = useCartCount(user?.signup_id);
+  const user = useUserStore(state => state.user);
+  const {count: uniqueCount, refresh: refreshCartCount} = useCartCount(user?.signup_id);
 
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
         tabBarIcon: ({color, size}) => {
           let imageSource;
+
           if (route.name === 'Home')
             imageSource = require('../assets/home.png');
           else if (route.name === 'Category')
             imageSource = require('../assets/category.png');
           else if (route.name === 'Cart')
             imageSource = require('../assets/cart.jpeg');
-           else if (route.name === 'Profile')
+          else if (route.name === 'Profile')
             imageSource = require('../assets/user.png');
 
           return (
@@ -53,7 +52,9 @@ const user = useUserStore(state => state.user);
       {user?.name === 'Test1' && (
         <Tab.Screen name="Category" component={ProductCategories} />
       )}
-      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="Cart">
+        {() => <Cart refreshCartCount={refreshCartCount} />}
+      </Tab.Screen>
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

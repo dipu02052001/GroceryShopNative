@@ -18,7 +18,7 @@ const AddGroceryItem = () => {
   const user = useUserStore(state => state.user);
   let userSignUpID = user?.signup_id;
   console.log('User used in Add groceryItem ', userSignUpID);
-  const adItem = useCartStore(state => state.addItem);
+  //const adItem = useCartStore(state => state.addItem);
   const cartStore = createCartStore(userSignUpID)
   const addItem = cartStore.getState().addItem;
 
@@ -130,7 +130,7 @@ const AddGroceryItem = () => {
                 mode="outlined"
                 textColor="black"
                 style={styles.input}
-                right={<TextInput.Icon icon="menu-down" />}
+                // right={<TextInput.Icon icon="menu-down" />}
                 theme={{
                   colors: {
                     text: 'black',

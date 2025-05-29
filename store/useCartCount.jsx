@@ -1,27 +1,28 @@
 // hooks/useCartCount.js
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 
 const useCartCount = (userId) => {
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
+  const fetchCartCount = useCallback(async () => {
     if (!userId) return;
-    console.log("userid:"+userId)
 
-    const fetchCartCount = async () => {
-      try {
-        const res = await axios.get(`https://groceryshop-spring-backend.onrender.com/Cart/count?signup_id=${userId}`);
-        setCount(res.data); // or res.data.count depending on your API response
-      } catch (err) {
-        console.error('Error fetching cart count:', err);
-      }
-    };
-
-    fetchCartCount();
+    try {
+      const res = await axios.get(
+        `https://groceryshop-spring-backend.onrender.com/Cart/count?signup_id=${userId}`
+      );
+      setCount(res.data); // Adjust if API returns { count: number }
+    } catch (err) {
+      console.error('Error fetching cart count:', err);
+    }
   }, [userId]);
 
-  return count;
+  useEffect(() => {
+    fetchCartCount();
+  }, [fetchCartCount]);
+
+  return { count, refresh: fetchCartCount };
 };
 
 export default useCartCount;
