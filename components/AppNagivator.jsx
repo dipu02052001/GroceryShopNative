@@ -100,34 +100,34 @@ const AppNagivator = () => {
             headerStyle: {
               backgroundColor: '#1e81b0',
             },
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert(
-                    'Logout Confirmation',
-                    'Do you want to logout from Shopping?',
-                    [
-                      {
-                        text: 'Cancel',
-                        style: 'cancel',
-                      },
-                      {
-                        text: 'OK',
-                        onPress: () => {
-                          useUserStore.getState().clearUser();
-                          navigation.reset({
-                            index: 0,
-                            routes: [{name: 'LoggedInHome'}],
-                          });
-                        },
-                      },
-                    ],
-                    {cancelable: true},
-                  );
-                }}>
-                <Text style={{color: 'white', marginRight: 15}}>Logout</Text>
-              </TouchableOpacity>
-            ),
+            // headerRight: () => (
+            //   <TouchableOpacity
+            //     onPress={() => {
+            //       Alert.alert(
+            //         'Logout Confirmation',
+            //         'Do you want to logout from Shopping?',
+            //         [
+            //           {
+            //             text: 'Cancel',
+            //             style: 'cancel',
+            //           },
+            //           {
+            //             text: 'OK',
+            //             onPress: () => {
+            //               useUserStore.getState().clearUser();
+            //               navigation.reset({
+            //                 index: 0,
+            //                 routes: [{name: 'LoggedInHome'}],
+            //               });
+            //             },
+            //           },
+            //         ],
+            //         {cancelable: true},
+            //       );
+            //     }}>
+            //     <Text style={{color: 'white', marginRight: 15}}>Logout</Text>
+            //   </TouchableOpacity>
+            // ),
           })}
         />
 
