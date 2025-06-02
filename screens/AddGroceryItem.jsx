@@ -181,7 +181,8 @@ const AddGroceryItem = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    justifyContent: 'flex-start',
+    flex: 1,
+    backgroundColor: '#a1c4f0',
   },
   title: {
     fontSize: 22,
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   dropdownWrapper: {
-    marginBottom: 15,
+    marginBottom: 170,
   },
   button: {
     marginTop: 30,

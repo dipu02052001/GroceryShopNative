@@ -97,7 +97,10 @@ const LoginForm = () => {
             <Text style={styles.link}>Forgot Password?</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-            <Text style={styles.link}>Sign Up</Text>
+            <Text style={styles.link}>
+              <Text style={styles.link}> New User ? </Text>
+                 Sign Up
+              </Text>
           </TouchableOpacity>
         </View>
       </View>

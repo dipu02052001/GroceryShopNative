@@ -79,11 +79,12 @@ const Contact = () => {
 
       <Divider style={styles.divider} />
 
-      <Text variant="titleMedium" style={styles.subtitle}>Office Address</Text>
-      <Text variant="bodySmall">FreshBasket HQ</Text>
-      <Text variant="bodySmall">123 Market Lane, Kolkata, West Bengal, India</Text>
-      <Text variant="bodySmall" style={styles.contactInfo}>📞 +91-99495559531</Text>
-      <Text variant="bodySmall">📧 support@freshbasket.com</Text>
+     <Text variant="titleMedium" style={[styles.subtitle, styles.boldBlack]}>Office Address</Text>
+     <Text variant="bodySmall" style={styles.boldBlack}>FreshBasket HQ</Text>
+     <Text variant="bodySmall" style={styles.boldBlack}>123 Market Lane, Kolkata, West Bengal, India</Text>
+     <Text variant="bodySmall" style={[styles.contactInfo, styles.boldBlack]}>📞 +91-99495559531</Text>
+    <Text variant="bodySmall" style={styles.boldBlack}>📧 support@freshbasket.com</Text>
+
     </ScrollView>
   );
 };
@@ -122,6 +123,10 @@ const styles = StyleSheet.create({
   divider: {
     marginVertical: 20,
   },
+  boldBlack: {
+  fontWeight: 'bold',
+  color: 'black',
+},
   subtitle: {
     marginBottom: 10,
      fontSize:18,

@@ -56,6 +56,7 @@ const LoggedInHome = () => {
   const handleShopping = () => {
     if (!user) {
       Alert.alert('Please login to start buying');
+      navigation.navigate('SignUp')
     } else {
       navigation.navigate('AddGroceryItem');
     }
@@ -129,7 +130,7 @@ const LoggedInHome = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#a1c4f0',
   },
   title: {
     fontSize: 26,

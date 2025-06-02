@@ -6,6 +6,9 @@ import {
   StyleSheet,
   FlatList,
   TextInput,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import useUserStore from '../store/useUserStore';
 import createCartStore from '../store/createCartStore';
@@ -82,7 +85,12 @@ const Cart = ({refreshCartCount}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+     style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+       keyboardVerticalOffset={100}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
+       <View style={styles.container}>
       <Text style={styles.header}>Your Cart</Text>
 
       {cartItems.length === 0 ? (
@@ -132,7 +140,7 @@ const Cart = ({refreshCartCount}) => {
                 <>
                   <Text style={styles.itemName}>Product: {item.itemName}</Text>
                   <Text style={styles.itemQuantity}>
-                    Quantity: {item.quantity}                     Weight: {item.weight}
+                    Quantity: {item.quantity}                  Weight: {item.weight}
                   </Text>
                   {item.comments ? (
                     <Text style={styles.itemComments}>
@@ -165,12 +173,15 @@ const Cart = ({refreshCartCount}) => {
           </TouchableOpacity>
         </View>
       )}
-    </View>
+       </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+   
   );
 };
 
 const styles = StyleSheet.create({
-  container: {padding: 20, backgroundColor: '#f5f5f5', flex: 1},
+  container: {padding: 20, backgroundColor: '#a1c4f0', flex: 1},
   header: {
     fontSize: 24,
     fontWeight: 'bold',

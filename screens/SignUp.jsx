@@ -160,7 +160,7 @@ const SignUp = () => {
         Sign Up
       </Button>
 
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
         <Text style={styles.loginText}>
           Already have an account? <Text style={styles.link}>Login</Text>
         </Text>
