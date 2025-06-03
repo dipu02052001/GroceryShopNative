@@ -113,7 +113,7 @@ const Profile = () => {
               style={styles.icon}
             />
           )}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('ContactUs')}
         />
         <Divider />
         <List.Item
@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#a1c4f0',
   },
   storeCard: {
     marginBottom: 20,
