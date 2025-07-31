@@ -1,6 +1,6 @@
 import AppNagivator from './components/AppNagivator';
 import {LoginProvider} from './components/LoginContext';
-import { Provider } from 'react-native-paper'; // ✅ Import this
+import { Provider } from 'react-native-paper';
 
 function App() {
   return (
