@@ -10,7 +10,7 @@ const useCartCount = (userId) => {
 
     try {
       const res = await axios.get(
-        `https://groceryshop-spring-backend.onrender.com/Cart/count?signup_id=${userId}`
+        `https://groceryshop-spring-backend.onrender.com/api/Cart/count?signup_id=${userId}`
       );
       setCount(res.data); // Adjust if API returns { count: number }
     } catch (err) {
