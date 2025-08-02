@@ -151,6 +151,15 @@ const SignUp = () => {
       {passwordError ? (
         <Text style={styles.errorText}>{passwordError}</Text>
       ) : null}
+     
+     <Text style={styles.label}>Address</Text>
+      <TextInput
+        value={form.address}
+        mode="outlined"
+        secureTextEntry
+        style={styles.address}
+        textColor="black"
+      />
 
       <Button
         mode="contained"
@@ -183,6 +192,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#1b1c1e',
   },
+  address:{
+    backgroundColor: 'white',
+     padding: 24,
+     marginBottom: 20,
+  },
   label: {
     fontSize: 14,
     color: '#000',
@@ -196,7 +210,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1976d2',
     borderRadius: 8,
   },
   loginText: {
@@ -205,7 +219,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   link: {
-    color: '#4CAF50',
+    color: '#1976d2',
     fontWeight: '600',
   },
   errorText: {

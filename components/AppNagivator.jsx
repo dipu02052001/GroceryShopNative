@@ -13,7 +13,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import About from '../screens/About';
 import Contact from '../screens/Contact';
 import HeaderMenu from './HeaderMenu';
-import useUserStore from '../store/useUserStore';
+import Customer from '../screens/Customer';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +38,7 @@ const AppNagivator = () => {
           name="Home"
           component={Home}
           options={{
-            title: 'Home', // Optional: change title text if needed
+            title: 'TRI Grocery', // Optional: change title text if needed
             //headerStyle: { backgroundColor: '#1870db' }, // red background
             headerTintColor: 'white', // white text/icons
           }}
@@ -48,7 +48,7 @@ const AppNagivator = () => {
           name="LoggedInHome"
           component={LoggedInHome}
           options={({navigation}) => ({
-            title: 'Grocery Store',
+            title: 'TRI Grocery',
             headerBackVisible: false,
             gestureEnabled: false,
             headerRight: () => <HeaderMenu navigation={navigation} />,
@@ -66,8 +66,18 @@ const AppNagivator = () => {
           }}
         /> */}
 
-        <Stack.Screen name="ProductCatelogue" component={ProductCatelogue} />
-        <Stack.Screen name="AddGroceryItem" component={AddGroceryItem} />
+        <Stack.Screen name="ProductCatelogue" component={ProductCatelogue}  
+        options={{
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
+          }}/>
+        <Stack.Screen name="AddGroceryItem" component={AddGroceryItem}  
+        options={{
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
+          }}/>
         {/* <Stack.Screen
           name="BottomTabNavigator"
           component={BottomTabNavigator}
@@ -94,7 +104,7 @@ const AppNagivator = () => {
           name="BottomTabNavigator"
           component={BottomTabNavigator}
           options={({navigation}) => ({
-            title: 'Grocery Store',
+            title: 'TRI Grocery',
             headerTintColor: 'black',
             headerBackVisible: false,
             headerStyle: {
@@ -131,23 +141,48 @@ const AppNagivator = () => {
           })}
         />
 
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="SetNewPassword" component={ForgetPassword} />
-        <Stack.Screen name="ProductCategory" component={ProductCategories} />
+        <Stack.Screen name="SignUp" component={SignUp}  
+        options={{
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
+          }} />
+        <Stack.Screen name="SetNewPassword" component={ForgetPassword} 
+         options={{
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
+          }} />
+        <Stack.Screen name="ProductCategory" component={ProductCategories} 
+         options={{
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
+          }} />
         <Stack.Screen
-          name="About"
-          component={About}
+          name="About" component={About}
           options={{
-            headerBackVisible: false,
-            headerShown: false,
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
           }}
         />
         <Stack.Screen
           name="ContactUs"
           component={Contact}
           options={{
-            headerBackVisible: false,
-            headerShown: false,
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="Customer"
+          component={Customer}
+          options={{
+            title: 'TRI Grocery',
+            headerBackVisible: true,
+            headerShown: true,
           }}
         />
       </Stack.Navigator>

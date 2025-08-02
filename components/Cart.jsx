@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   },
   checkoutButton: {
     marginTop: 15,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1976d2',
     paddingVertical: 10,
     borderRadius: 5,
   },

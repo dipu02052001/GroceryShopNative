@@ -12,53 +12,71 @@ import axios from 'axios';
 import {LoginContext} from './LoginContext'; // ensure this exists
 import {useNavigation} from '@react-navigation/native';
 import useUserStore from '../store/useUserStore'; // adjust path if needed
+import { ActivityIndicator } from 'react-native-paper';
 
 const LoginForm = () => {
   const [users, setUsers] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState('');
   const {setIsLoggedIn} = useContext(LoginContext);
   const navigation = useNavigation();
   const setUser = useUserStore(state => state.setUser);
   //console.log("new user"+setUser);
 
-  useEffect(() => {
-    axios
-      .get('https://groceryshop-spring-backend.onrender.com/Signup/getAccounts')
-      .then(response => {
-        console.log('API Response:', response.data);
-        setUsers(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get('https://groceryshop-spring-backend.onrender.com/Signup/getAccounts')
+  //     .then(response => {
+  //       console.log('API Response:', response.data);
+  //       setUsers(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:', error);
+  //     });
+  // }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
 
-    setLoading(true);
     if (!username || !password) {
       Alert.alert('Validation', 'All fields are required!');
       return;
     }
+     setIsLoading(true);
+     setError('');
+     try {
+      const response  = await axios.get('https://groceryshop-spring-backend.onrender.com/Signup/getAccounts',
+      {
+          params: { username, password }, // Send as query params
+          timeout: 90000 // 10-second timeout
+      }  
+      
+    );
+    setUsers(response.data);
+
     const userFound = users.find(
       user => user.email === username && user.password === password,
     );
 
     if (userFound) {
-      setIsLoggedIn(true);
       setUser(userFound); //  Save user globally
       navigation.navigate('BottomTabNavigator');
       setUsername('');
       setPassword('');
     } else {
-      setLoading(true);
+     setError('Invalid credentials')
       Alert.alert('Login Failed', 'Invalid credentials.');
       setUsername('');
       setPassword('');
     }
-    setLoading(false);
+  }
+  catch(error){
+    console.error('Login error:', error);
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleForget = () => {
@@ -76,6 +94,7 @@ const LoginForm = () => {
           placeholderTextColor="black"
           value={username}
           onChangeText={setUsername}
+          editable={!isLoading}
           keyboardType="email-address"
           autoCapitalize="none"
           required
@@ -87,10 +106,16 @@ const LoginForm = () => {
           style={styles.input}
           value={password}
           onChangeText={setPassword}
+          editable={!isLoading}
           required
         />
 
-        <Button title="Login" onPress={handleLogin} color="#667eea" />
+        {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />) 
+        : 
+        (
+            <Button title="Login" onPress={handleLogin}  disabled={isLoading} color="#1976d2"/>
+         )}
 
         <View style={styles.linksContainer}>
           <TouchableOpacity onPress={handleForget}>
@@ -104,6 +129,7 @@ const LoginForm = () => {
           </TouchableOpacity>
         </View>
       </View>
+       
     </View>
   );
 };
@@ -138,13 +164,21 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     color: 'black',
   },
+  loader: {
+    marginVertical: 20,
+  },
+   errorText: {
+    color: 'red',
+    marginTop: 10,
+    textAlign: 'center',
+  },
   linksContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 12,
   },
   link: {
-    color: '#667eea',
+    color: '#1976d2',
     textDecorationLine: 'underline',
   },
 });

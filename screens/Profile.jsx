@@ -25,7 +25,7 @@ const Profile = () => {
     <ScrollView style={styles.container}>
       <Card style={styles.storeCard}>
         <Card.Title
-          title="Grocery Store"
+          title="TRI Grocery"
           subtitle="Fresh Grocery Store Near Me"
           left={() => (
             <Image
@@ -58,9 +58,9 @@ const Profile = () => {
               style={styles.icon}
             />
           )}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('Customer')}
         />
-        <List.Item
+        {/* <List.Item
           title="Help & support"
           titleStyle={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}
           left={() => (
@@ -70,7 +70,7 @@ const Profile = () => {
             />
           )}
           onPress={() => navigation.navigate('ContactUs')}
-        />
+        /> */}
         <List.Item
           title="Change Language"
           titleStyle={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}

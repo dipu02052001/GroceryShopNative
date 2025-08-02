@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   button: {
+    backgroundColor: '#1976d2',
     marginTop: 10,
   },
   divider: {
