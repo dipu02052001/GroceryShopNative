@@ -41,7 +41,7 @@ const createCartStore = userId => {
           updateItem: async (cart_id, updatedItem) => {
             try {
               await axios.patch(
-                `https://groceryshop-spring-backend.onrender.com//apiCart/update/${cart_id}`,
+                `https://groceryshop-spring-backend.onrender.com//api/Cart/update/${cart_id}`,
                 updatedItem,
               );
               await get().fetchCart(); // refresh after update
