@@ -52,7 +52,7 @@ const createCartStore = userId => {
           removeItem: async cart_id => {
             try {
               await axios.delete(
-                `https://groceryshop-spring-backend.onrender.com//api/Cart/remove/${cart_id}`,
+                `https://groceryshop-spring-backend.onrender.com/api/Cart/remove/${cart_id}`,
               );
               await get().fetchCart(); // refresh after delete
             } catch (err) {
