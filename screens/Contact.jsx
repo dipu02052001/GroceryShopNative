@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, TextInput, Button, Divider } from 'react-native-paper';
+import axios from 'axios'; 
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -80,10 +81,10 @@ const Contact = () => {
       <Divider style={styles.divider} />
 
      <Text variant="titleMedium" style={[styles.subtitle, styles.boldBlack]}>Office Address</Text>
-     <Text variant="bodySmall" style={styles.boldBlack}>FreshBasket HQ</Text>
-     <Text variant="bodySmall" style={styles.boldBlack}>123 Market Lane, Kolkata, West Bengal, India</Text>
-     <Text variant="bodySmall" style={[styles.contactInfo, styles.boldBlack]}>📞 +91-99495559531</Text>
-    <Text variant="bodySmall" style={styles.boldBlack}>📧 support@freshbasket.com</Text>
+     <Text variant="bodySmall" style={styles.boldBlack}>TRIGROCERY HQ</Text>
+     <Text variant="bodySmall" style={styles.boldBlack}>Canning Bridge Road, Kolkata, West Bengal, India</Text>
+     <Text variant="bodySmall" style={[styles.contactInfo, styles.boldBlack]}>📞 +91-9593907036</Text>
+    <Text variant="bodySmall" style={styles.boldBlack}>📧 trigo8323@gmail.com</Text>
 
     </ScrollView>
   );
