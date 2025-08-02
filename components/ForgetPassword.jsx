@@ -27,7 +27,7 @@ const ForgetPassword = () => {
       return;
     }
 
-    axios.post('https://groceryshop-spring-backend.onrender.com/customers/resetPassword', { email })
+    axios.post('https://groceryshop-spring-backend.onrender.com/api/customers/resetPassword', { email })
       .then(response => {
         console.log('Reset Response:', response.data);
         Alert.alert('Success', 'Password reset link sent to your email!');

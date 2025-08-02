@@ -17,7 +17,7 @@ const createCartStore = userId => {
           fetchCart: async () => {
             try {
               const res = await axios.get(
-                `https://groceryshop-spring-backend.onrender.com/Cart/${userSignUpID}`,
+                `https://groceryshop-spring-backend.onrender.com/api/Cart/${userSignUpID}`,
               );
               set({ cartItems: [...res.data] });
             } catch (err) {
@@ -28,7 +28,7 @@ const createCartStore = userId => {
           addItem: async (userSignUpID, item) => {
             try {
               await axios.post(
-                `https://groceryshop-spring-backend.onrender.com/Cart/add/${userSignUpID}`,
+                `https://groceryshop-spring-backend.onrender.com/api/Cart/add/${userSignUpID}`,
                 item,
               );
               // Always refresh the cart from the backend
@@ -41,7 +41,7 @@ const createCartStore = userId => {
           updateItem: async (cart_id, updatedItem) => {
             try {
               await axios.patch(
-                `https://groceryshop-spring-backend.onrender.com/Cart/update/${cart_id}`,
+                `https://groceryshop-spring-backend.onrender.com//apiCart/update/${cart_id}`,
                 updatedItem,
               );
               await get().fetchCart(); // refresh after update
@@ -53,7 +53,7 @@ const createCartStore = userId => {
           removeItem: async cart_id => {
             try {
               await axios.delete(
-                `https://groceryshop-spring-backend.onrender.com/Cart/remove/${cart_id}`,
+                `https://groceryshop-spring-backend.onrender.com//api/Cart/remove/${cart_id}`,
               );
               await get().fetchCart(); // refresh after delete
             } catch (err) {
