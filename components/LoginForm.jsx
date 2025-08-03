@@ -19,7 +19,6 @@ const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState('');
   const {setIsLoggedIn} = useContext(LoginContext);
   const navigation = useNavigation();
   const setUser = useUserStore(state => state.setUser);
@@ -49,7 +48,7 @@ const LoginForm = () => {
       const response  = await axios.get('https://groceryshop-spring-backend.onrender.com/Signup/getAccounts',
       {
           params: { username, password }, // Send as query params
-          timeout: 90000 // 10-second timeout
+          timeout: 1300000 // 130-second timeout
       }  
       
     );
@@ -61,11 +60,11 @@ const LoginForm = () => {
 
     if (userFound) {
       setUser(userFound); //  Save user globally
+      setIsLoggedIn(userFound);
       navigation.navigate('BottomTabNavigator');
       setUsername('');
       setPassword('');
     } else {
-     setError('Invalid credentials')
       Alert.alert('Login Failed', 'Invalid credentials.');
       setUsername('');
       setPassword('');
@@ -73,7 +72,7 @@ const LoginForm = () => {
   }
   catch(error){
     console.error('Login error:', error);
-      setError(error.response?.data?.message || 'Login failed. Please try again.');
+       Alert.alert('Login Failed', 'Invalid credentials.');
     } finally {
       setIsLoading(false);
     }
