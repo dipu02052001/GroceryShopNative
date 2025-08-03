@@ -53,14 +53,17 @@ jobs:
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
+        if: success()  # Only run if previous steps succeeded
         with:
-          name: release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+            name: release-apk
+            path: android/app/build/outputs/apk/release/app-release.apk
 
-      - name: List APK files for verification
+      - name: Copy APK to docs
         run: |
-           ls -l android/app/build/outputs/apk/release/
-           cp android/app/build/outputs/apk/release/app-release.apk docs/grocery-app.apk
+            mkdir -p docs  # Create directory if missing
+            ls -l android/app/build/outputs/apk/release/  # Debug listing
+            cp android/app/build/outputs/apk/release/app-release.apk docs/grocery-app.apk
+            ls -l docs/  # Verify copy worked
 
       # - name: Upload APK artifact
       #   uses: actions/upload-artifact@v3.1.2
