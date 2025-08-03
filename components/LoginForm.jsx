@@ -39,7 +39,7 @@ const LoginForm = () => {
   const handleLogin = async () => {
 
     if (!username || !password) {
-      Alert.alert('Validation', 'All fields are required!');
+      Alert.alert('Validation', 'All fields are required!!!!!!');
       return;
     }
      setIsLoading(true);
